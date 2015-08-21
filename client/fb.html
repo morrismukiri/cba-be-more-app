@@ -1,0 +1,117 @@
+<head>
+    <title>CBA Be More</title>
+</head>
+<body class="container">
+
+</body>
+
+<template name="fbLogin">
+    {{#if loggedIn}}
+        {{#if authorised}}
+            {{>login }}
+
+            {{> facebookShare config}}
+
+            {{#each questions}}
+                {{>quiz}}
+            {{else}}
+                no questions yet
+            {{/each}}
+            {{>login}}
+        {{else}}
+
+        {{/if}}
+    {{else}}
+        {{>login }}
+    {{/if}}
+    <div id="status">
+    </div>
+</template>
+<template name="mainBody">
+
+    <div class="topbar">
+        {{>topbar }}
+    </div>
+    {{>fbLogin}}
+</template>
+<template name="login">
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+</template>
+
+<template name="topbar">
+    <nav class="navbar navbar-">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <!--<img alt="Brand" src="...">-->
+                    CBA Be More Challenge
+                </a>
+
+            </div>
+        </div>
+    </nav>
+</template>
+<template name="quiz">
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Question {{no}}</h1>
+
+            <p>{{question}}</p>
+            <fieldset>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">Answer</label>
+
+                        <div class="col-lg-10">
+                            <!--<div class="input- radio">-->
+                                <!--<label><input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked=""> {{optionA}}-->
+                                <!--</label>-->
+                            <!--</div>-->
+
+                            <!--<input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">-->
+                            <!--<input type="radio" name="optionsRadios" id="adA{{_id}}" value="A" checked="">-->
+                            <!--<input type="radio" name="optionsRadios" id="" value="A" checked="">-->
+                            <div class="radio radio-primary">
+                            <label>
+                            <input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">
+                            {{optionA}}
+                            </label>
+                            </div>
+                            <div class="radio radio-primary">
+                            <label>
+                            <input type="radio" name="optionsRadios" id="" value="B" checked="">
+                            {{optionB}}
+                            </label>
+                            </div>
+                            <div class="radio radio-primary">
+                            <label>
+                            <input type="radio" name="optionsRadios" id="radA{{_id}}" value="B" checked="">
+                            {{optionC}}
+                            </label>
+                            </div>
+                            <div class="radio radio-primary">
+                            <label>
+                            <input type="radio" name="optionsRadios" id="radA{{_id}}" value="D" checked="">
+                            {{optionD}}
+                            </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <p><a class="btn btn-primary btn-lg">Next</a></p>
+            </fieldset>
+        </div>
+    </div>
+</template>
+<template name="option">
+    <div class="radio radio-primary">
+        <label>
+            <input type="radio" name="optionsRadios" id="" value="{{option}}" checked="">
+            {{option}}
+        </label>
+    </div>
+
+</template>
