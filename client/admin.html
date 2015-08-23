@@ -1,0 +1,9 @@
+<template name="adminLogin">
+    {{>loginButtons}}
+    {{#if currentUser}}
+        <h1>You need to be logged in as administrator to continue</h1>
+        <a href="/admin" class="btn btn-primary">Access Management</a>
+
+    {{/if}}
+
+</template>

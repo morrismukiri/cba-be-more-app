@@ -1,7 +1,5 @@
 
-Accounts.config({
-    forbidClientAccountCreation: false
-});
+
 if (Meteor.isClient) {
     //configs
     //cbagroup.com

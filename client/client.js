@@ -1,9 +1,12 @@
-Session.setDefault('loggedIn',false);
-Session.setDefault('authorised',false);
+Session.setDefault('loggedIn', false);
+Session.setDefault('authorised', false);
 
 if (Meteor.isClient) {
+
+
     Meteor.subscribe('questions');
-    questions=new Mongo.Collection('questions');
+    Meteor.subscribe('howItWorksItems');
+    Meteor.subscribe('rewards');
 //fb models
     Template.fbLogin.helpers({
         loggedIn: function () {
@@ -14,11 +17,22 @@ if (Meteor.isClient) {
         },
         questions: function () {
             //var foundQuestions= Meteor.call('fetchQuiz');
-           // fi//console.log(foundQuestions);
+            // fi//console.log(foundQuestions);
 
             return questions.find({}); // foundQuestions;
-        }
-
+        },
 
     });
+    Template.howItWorks.helpers({
+        howItWorksItems: function () {
+            return howItWorksItems.find({});
+        }
+    });
+    Template.rewards.helpers({
+        rewards: function () {
+            return rewards.find({});
+        }
+    });
+
+
 }

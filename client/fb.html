@@ -1,7 +1,7 @@
 <head>
     <title>CBA Be More</title>
 </head>
-<body class="container">
+<body class="">
 
 </body>
 
@@ -32,11 +32,21 @@
     <div class="topbar">
         {{>topbar }}
     </div>
-    {{>fbLogin}}
+    <div class="container">
+        <div class="col-xs-12 col-md-6">
+            {{>howItWorks}}
+        </div>
+        <div class="col-xs-12 col-md-6">
+            {{>rewards}}
+        </div>
+        {{>fbLogin}}
+    </div>
 </template>
 <template name="login">
-    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-max-rows="3" data-size="xlarge"
+                     data-show-faces="true" data-auto-logout-link="true">
     </fb:login-button>
+    <!--<div class="fb-login-button" data-max-rows="3" data-size="xlarge" data-show-faces="true" data-auto-logout-link="true"></div>-->
 </template>
 
 <template name="topbar">
@@ -66,36 +76,36 @@
 
                         <div class="col-lg-10">
                             <!--<div class="input- radio">-->
-                                <!--<label><input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked=""> {{optionA}}-->
-                                <!--</label>-->
+                            <!--<label><input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked=""> {{optionA}}-->
+                            <!--</label>-->
                             <!--</div>-->
 
                             <!--<input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">-->
                             <!--<input type="radio" name="optionsRadios" id="adA{{_id}}" value="A" checked="">-->
                             <!--<input type="radio" name="optionsRadios" id="" value="A" checked="">-->
                             <div class="radio radio-primary">
-                            <label>
-                            <input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">
-                            {{optionA}}
-                            </label>
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">
+                                    {{optionA}}
+                                </label>
                             </div>
                             <div class="radio radio-primary">
-                            <label>
-                            <input type="radio" name="optionsRadios" id="" value="B" checked="">
-                            {{optionB}}
-                            </label>
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="" value="B" checked="">
+                                    {{optionB}}
+                                </label>
                             </div>
                             <div class="radio radio-primary">
-                            <label>
-                            <input type="radio" name="optionsRadios" id="radA{{_id}}" value="B" checked="">
-                            {{optionC}}
-                            </label>
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="radA{{_id}}" value="B" checked="">
+                                    {{optionC}}
+                                </label>
                             </div>
                             <div class="radio radio-primary">
-                            <label>
-                            <input type="radio" name="optionsRadios" id="radA{{_id}}" value="D" checked="">
-                            {{optionD}}
-                            </label>
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="radA{{_id}}" value="D" checked="">
+                                    {{optionD}}
+                                </label>
                             </div>
 
                         </div>
@@ -114,4 +124,51 @@
         </label>
     </div>
 
+</template>
+<template name="howItWorksItem">
+    <div class="list-group-item">
+        <div class="row-action-primary material-deep-blue-900">
+            <i class="{{icon}}"></i>
+        </div>
+        <div class="row-content">
+            <div class="least-content">{{no}}</div>
+            <h4 class="list-group-item-heading">{{title}}</h4>
+
+            <p class="list-group-item-text">{{description}}</p>
+        </div>
+    </div>
+    <div class="list-group-separator"></div>
+</template>
+<template name="howItWorks">
+    <h1>How It Works</h1>
+
+    <div class="list-group">
+        {{#each howItWorksItems}}
+            {{>howItWorksItem}}
+        {{/each}}
+    </div>
+</template>
+<template name="rewards">
+    <h1>Rewards</h1>
+    <em>Why bother?</em>
+
+    <div class="list-group">
+        {{#each rewards }}
+            {{>rewardItem}}
+        {{/each}}
+    </div>
+</template>
+<template name="rewardItem">
+    <div class="list-group-item">
+        <div class="row-action-primary">
+            <i class="{{icon}}"></i>
+        </div>
+        <div class="row-content">
+            <div class="action-secondary"><i class="mdi-material-info"></i></div>
+            <h4 class="list-group-item-heading">{{title}}</h4>
+
+            <p class="list-group-item-text">{{description}}</p>
+        </div>
+    </div>
+    <div class="list-group-separator"></div>
 </template>
