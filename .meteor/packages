@@ -14,10 +14,13 @@ alanning:roles
 fortawesome:fontawesome
 fezvrasta:bootstrap-material-design
 ian:accounts-ui-bootstrap-3
-aldeed:simple-schema
+aldeed:simple-schema@1.0.3
 aldeed:autoform
-force-ssl
-nourharidy:ssl
 biasport:facebook-sdk
 email
 yogiben:admin
+accounts-facebook
+service-configuration
+meteorhacks:fast-render
+ongoworks:security
+nourharidy:ssl

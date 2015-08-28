@@ -1,53 +1,77 @@
 <head>
-    <title>CBA Be More</title>
+    <title>CBA Be More Challenge</title>
 </head>
 <body class="">
 
 </body>
+<template name="fbApp">
 
-<template name="fbLogin">
-    {{#if loggedIn}}
-        {{#if authorised}}
-            {{>login }}
-
-            {{> facebookShare config}}
-
-            {{#each questions}}
-                {{>quiz}}
+    <div class="container">
+        {{#if currentUser}}
+            {{#if currentLevel 0}}
+                {{>topbar}}
+                {{>unLoggedInBody}}
             {{else}}
-                no questions yet
-            {{/each}}
-            {{>login}}
-        {{else}}
+                {{#if currentLevel 1}}
+                    {{>topbar}}
+                    {{>quiz}}
+                {{else}}
+                    {{#if currentLevel 2}}
+                        {{>app}}
+                    {{/if}}
+                {{/if}}
+            {{/if}}
 
+        {{else}}
+            {{>unLoggedInBody}}
         {{/if}}
-    {{else}}
-        {{>login }}
-    {{/if}}
-    <div id="status">
     </div>
 </template>
-<template name="mainBody">
-
+<template name="app">
     <div class="topbar">
         {{>topbar }}
     </div>
-    <div class="container">
-        <div class="col-xs-12 col-md-6">
-            {{>howItWorks}}
+    {{#if currentUser}}
+        {{currentUser.services.facebook.name}}
+        <div class="container">
+            {{>updateProfile}}
         </div>
-        <div class="col-xs-12 col-md-6">
-            {{>rewards}}
-        </div>
-        {{>fbLogin}}
+        {{!currentUser.services.facebook.gender}}
+        <!--<button id="logout">Logout</button>-->
+    {{else}}
+        {{>unLoggedInBody}}
+    {{/if}}
+</template>
+<template name="updateProfile">
+    <h1>Update your Be More Profile</h1>
+
+    <div class="col-md-8">
+        {{> quickForm collection='Meteor.users' schema='Schemas.User' doc=currentUserInfo id="updateProfile" type="update" omitFields="emails.$.verified,createdAt,services,CBAAccount,roles"}}
     </div>
 </template>
-<template name="login">
-    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-max-rows="3" data-size="xlarge"
-                     data-show-faces="true" data-auto-logout-link="true">
-    </fb:login-button>
-    <!--<div class="fb-login-button" data-max-rows="3" data-size="xlarge" data-show-faces="true" data-auto-logout-link="true"></div>-->
+<template name="unLoggedInBody">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 center"><button id="facebook-login" class="btn btn-info facebook-login"><i class="icon  icon-facebook"></i> Login with Facebook</button></div>
+        </div>
+        <div class="col-md-6">
+            {{>howItWorks}}
+        </div>
+        <div class="col-md-6">
+            {{>rewards}}
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5 center"><button id="facebook-login-bottom" class="btn btn-info facebook-login"><i class="icon  icon-facebook"></i> Login with Facebook</button></div>
+        </div>
+    </div>
 </template>
+<!--<template name="login">-->
+<!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-max-rows="3" data-size="xlarge"-->
+<!--data-show-faces="true" data-auto-logout-link="true">-->
+<!--</fb:login-button>-->
+<!--&lt;!&ndash;<div class="fb-login-button" data-max-rows="3" data-size="xlarge" data-show-faces="true" data-auto-logout-link="true"></div>&ndash;&gt;-->
+<!--</template>-->
 
 <template name="topbar">
     <nav class="navbar navbar-">
@@ -57,7 +81,12 @@
                     <!--<img alt="Brand" src="...">-->
                     CBA Be More Challenge
                 </a>
-
+                {{! #if currentUser}}
+                <a href="" class="pull-right">
+                    {{currentUser.services.facebook.name}}</a>
+                <a href="profile" class="nav-item">Be More Profile</a>
+                <a href="#" class="nav-item">Leader Board</a>
+                {{! /if}}
             </div>
         </div>
     </nav>
@@ -75,14 +104,6 @@
                         <label class="col-lg-2 control-label">Answer</label>
 
                         <div class="col-lg-10">
-                            <!--<div class="input- radio">-->
-                            <!--<label><input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked=""> {{optionA}}-->
-                            <!--</label>-->
-                            <!--</div>-->
-
-                            <!--<input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">-->
-                            <!--<input type="radio" name="optionsRadios" id="adA{{_id}}" value="A" checked="">-->
-                            <!--<input type="radio" name="optionsRadios" id="" value="A" checked="">-->
                             <div class="radio radio-primary">
                                 <label>
                                     <input type="radio" name="optionsRadios" id="radA{{_id}}" value="A" checked="">
@@ -144,17 +165,20 @@
 
     <div class="list-group">
         {{#each howItWorksItems}}
-            {{>howItWorksItem}}
+            <div class="jumbotron">
+                {{>howItWorksItem}}
+            </div>
         {{/each}}
     </div>
 </template>
 <template name="rewards">
     <h1>Rewards</h1>
-    <em>Why bother?</em>
 
     <div class="list-group">
         {{#each rewards }}
-            {{>rewardItem}}
+            <div class="jumbotron">
+                {{>rewardItem}}
+            </div>
         {{/each}}
     </div>
 </template>
@@ -171,4 +195,7 @@
         </div>
     </div>
     <div class="list-group-separator"></div>
+</template>
+<template name="profile">
+
 </template>

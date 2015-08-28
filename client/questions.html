@@ -1,0 +1,56 @@
+<template name="oneTimeQuiz">
+    {{>topbar}}
+    <form>
+        {{#each questions}}
+            <div class="question-container">
+                <ul class="list-unstyled">
+                    <li>{{>question}}</li>
+                </ul>
+            </div>
+
+        {{/each}}
+        <ul class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+        </ul>
+
+        <input type="submit" value="Finish"/>
+    </form>
+</template>
+<template name="question">
+<h3>{{no}}. {{question}}</h3>
+    <div class="col-md-12">
+        <div class="funkyradio">
+
+            <div class="funkyradio-success">
+                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
+                <label for="radio3">{{optionA}}</label>
+            </div>
+
+        </div>
+        <div class="funkyradio">
+
+            <div class="funkyradio-success">
+                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
+                <label for="radio3">{{optionB}}</label>
+            </div>
+
+        </div>
+        <div class="funkyradio">
+
+            <div class="funkyradio-success">
+                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
+                <label for="radio3">{{optionC}}</label>
+            </div>
+
+        </div>
+        <div class="funkyradio">
+
+            <div class="funkyradio-success">
+                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
+                <label for="radio3">{{optionD}}</label>
+            </div>
+
+        </div>
+    </div>
+</template>
