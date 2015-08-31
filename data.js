@@ -4,15 +4,16 @@ Schemas = {},
     participatingInstitutions = new Mongo.Collection('participatingInstitutions'),
     userActivity = new Mongo.Collection('userActivity'),
     gameActivity = new Mongo.Collection('gameActivity'),
+    //firstQuiz = new Mongo.Collection('firstQuiz'),
     howItWorksItems = new Mongo.Collection('howItWorksItems');
 terms = new Mongo.Collection('terms');
-//users=new Mongo.Collection('users');
-var allowedUniversities = //participatingInstitutions.find({}).fetch();
-[
-    'Nairobi University',
-    'Kenyatta University',
-    'Jomo Kenyatta Univeristy Of Agriculture and Technology',
-    'Strathmore Univeristy', 'United States International University', 'others'];
+gameUsers = Meteor.users;
+var allowedUniversities = participatingInstitutions.find({}).fetch();
+//[
+//    'Nairobi University',
+//    'Kenyatta University',
+//    'Jomo Kenyatta Univeristy Of Agriculture and Technology',
+//    'Strathmore Univeristy', 'United States International University', 'others'];
 Schemas.participatingInstitutions = new SimpleSchema({
     name: {type: String}
 });
@@ -148,10 +149,6 @@ Schemas.UserProfile = new SimpleSchema({
     //    regEx: /^[a-z0-9A-z .]{3,30}$/,
     //    optional: true
     //},
-    bio: {
-        type: String,
-        optional: true
-    },
     institution: {
         type: String,
         optional: true,
@@ -218,6 +215,14 @@ Schemas.User = new SimpleSchema({
         type: Object,
         optional: true,
         blackbox: true
+    },
+    currentLevel: {
+        type: Number,
+        optional: true
+    },
+    cumulativePoints: {
+        type: Number,
+        optional: true
     }
     //,
     // Option 2: [String] type
@@ -243,7 +248,7 @@ Schemas.userActivity = new SimpleSchema({
         optional: true,
         blackbox: true
     },
-    recordedTime:{
+    recordedTime: {
         type: Date,
         defaultValue: function () {
             return new Date();
@@ -261,7 +266,9 @@ AdminConfig = {
         //skin: 'black'
 
     },
-    userSchema: Schemas.User,
+
+    userSchema: null,
+    //userSchema: Schemas.User,
     //adminEmails: ['morrismukiri@gmail.com'],
     collections: {
         Questions: {
@@ -301,33 +308,66 @@ AdminConfig = {
         },
         participatingInstitutions: {
             label: 'Participating Institutions',
-            icon: 'fa-graduation-cap',
+            icon: 'university',
             tableColumns: [
                 {label: 'Name', name: 'name'}
             ]
         },
         terms: {
             label: 'Terms and Conditions',
-            icon: 'book-open',
+            icon: 'list-alt',
             template: {
                 add: null
             },
             tableColumns: [
                 {label: 'Content', name: 'content'}
+            ],
+            showWidget: false
+        }
+        ,
+        gameUsers: {
+            label: 'Registered Users',
+            icon: 'gamepad',
+            tableColumns: [
+                {label: 'Facebook name', name: 'profile.name'},
+                {label: 'Email', name: 'emails.[0].address'},
+                {label: 'PhoneNo', name: 'profile.phoneNo'},
+                {label: 'Points', name: 'cumulativePoints'},
+                {label: 'CBA AC', name: 'CBAAccount.accountNo'},
+                {label: 'Verified', name: 'CBAAccount.verified'},
+                {label: 'Campus', name: 'institution'}
+            ]
+        },
+        userActivity: {
+            label: 'User Gameplay log',
+            icon: 'share-square',
+            showWidget: false,
+            tableColumns: [
+                {label: 'Activity', name: 'activity'},
+                {label: 'Time', name: 'recordedTime'}
             ]
         }
-        //,
-        //users:{
-        //    label: 'Registered Users',
-        //    tableColumns:[
-        //        {label:'name',name:'profile.name'},
-        //        {label:'email',name:'profile.email'}
-        //    ]
-        //}
 
 
     }
 }
+Meteor.users.helpers({
+    getScore: function (id) {
+        if (!id) {
+            id = Meteor.userId()
+        }
+        return Meteor.users.findOne(id).cumulativePoints;
+        //return this.cumulativePoints;
+    },
+    getLeaderBoard: function (campus, limit) {
+        var filrter = campus ? {institution: campus} : {};
+
+        return Meteor.users.find(filrter).limit(limit ? limit : 10).sort({cumulativePoints: -1});
+    }
+})
+;
+
+//AdminDashboard.addSidebarItem('Top Playes', AdminDashboard.path('/Users'), { icon: 'person' })
 
 if (Meteor.isServer) {
 }

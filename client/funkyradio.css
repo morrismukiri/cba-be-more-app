@@ -1,6 +1,6 @@
  .funkyradio div {
     clear: both;
-    /*margin: 0 50px;*/
+    margin: 0 50px;
     overflow: hidden;
 }
 .funkyradio label {

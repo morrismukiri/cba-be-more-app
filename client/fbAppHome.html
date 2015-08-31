@@ -1,25 +1,77 @@
 <template name="appHome">
-    {{>topbar}}
 
+    <div class="col-md-7 jumbotron"  style="margin-right: 20px">{{>infoContainer}}</div>
+    <div class="col-md-4 jumbotron">
+        <div class="col-md-12">{{>info}}</div>
 
+        <div class="col-md-12">{{>leaderBoard}}</div>
+    </div>
 </template>
 
 <template name="info">
     <!--points-->
-    <div class="container">
-        <button class="btn btn-default btn-lg btn-link" style="font-size:36px;">
-            <span class="glyphicon glyphicon-comment"></span>
+    <div class="panel panel-primary">
+        <button class="btn btn-invese btn-lg btn-link center" style="font-size:24px;">
+            score <span class="glyphicon glyphicon-user"></span>
         </button>
-        <span class="badge badge-notify">30</span>
+        <span class="badge badge-notify">{{currentScore}}</span>
     </div>
     <!--points-->
     <!--Profile-->
-    <a href="#">Profile <span class="badge">level 3</span></a>
+    <!--<a href="#">Profile <span class="badge">level 3</span></a>-->
     <!--Profile-->
+    <!--<hr/>-->
 
 </template>
 <template name="leaderBoard">
     <h3>Top Players</h3>
 
+    <div class="bs-example">
+        <ol class="list-group">
+            <li class="list-group-item">
+                <a href="#"> Morris Mg
+                </a>
+                <span class="badge">39</span>
+            </li>
+            <div class="list-group-separator"></div>
+
+        </ol>
+    </div>
 </template>
-<template name="infoContainer"></template>
+<template name="leaderboardNew">
+    <h3>Top Players</h3>
+
+    <div class="bs-example">
+        <ol class="list-group">
+            <li class="list-group-item">
+                <a href="#"> {{name}}
+                </a>
+                <span class="badge">{{score}}</span>
+            </li>
+            <div class="list-group-separator"></div>
+            </ol>
+        </div>
+</template>
+<template name="infoContainer">
+    <div class="">
+        <h3>Thankyou for trying out the Be More Challenge</h3>
+
+
+        <div class="container">
+            <h3>How to earn points</h3>
+            <ol class="list-group">
+                <li class="">Answer the General Knowledge Quiz <a href="/quiz" class="btn btn-sm btn-flat btn-success">Answer
+                    Now</a></li>
+                <li>Update your Be More Challenge <a href="profile" class="btn btn-sm btn-flat btn-success">Update</a>
+                </li>
+                <li>Invite Friends <a href="#" id="fbShare" class="btn btn-sm btn-info"><i class="fa fa-share"></i> Share on Facbook</a></li>
+                <li>Answer the Daily Trivia Question</li>
+                <li>Open a CBA Account online at <a href="http://cbagroup.com/be-more" target="_blank">http://cbagroup.com/be-more</a>   </li>
+                <li>Top up your CBA Account with the minimum amount</li>
+                <li>Claim your be More Account <a href="#" class="btn btn-flat btn-sm">Claim your account</a></li>
+                <li>Spin The wheel of fortune and stand a chance to win one of the many prizes</li>
+
+            </ol>
+        </div>
+    </div>
+</template>

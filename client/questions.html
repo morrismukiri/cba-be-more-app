@@ -1,54 +1,70 @@
 <template name="oneTimeQuiz">
     {{>topbar}}
-    <form>
-        {{#each questions}}
-            <div class="question-container">
-                <ul class="list-unstyled">
-                    <li>{{>question}}</li>
-                </ul>
-            </div>
+    <form class="container" id="oneTimeQuiz" method="post" >
+        <!--<div class="radio">-->
+        <!--<label>-->
+        <!--<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">-->
+        <!--Option one is this-->
+        <!--</label>-->
+        <!--</div>-->
+        <ul class="list-unstyled list-group">
+            {{#each questions}}
+                <div class="question-container">
 
-        {{/each}}
-        <ul class="pager">
-            <li><a href="#">Previous</a></li>
-            <li><a href="#">Next</a></li>
+
+                    <li class="list-item">
+                        <!--<div class="jumbotron">-->
+                            {{>question}}
+                        <!--</div>-->
+                    </li>
+
+
+                </div>
+
+            {{/each}}
         </ul>
+        <!--<ul class="pager">-->
+        <!--<li><a href="#">Previous</a></li>-->
+        <!--<li><a href="#">Next</a></li>-->
+        <!--</ul>-->
 
-        <input type="submit" value="Finish"/>
+        <input type="submit" class="btn btn-lg btn-success" value="Finish"/>
     </form>
 </template>
 <template name="question">
-<h3>{{no}}. {{question}}</h3>
-    <div class="col-md-12">
+    <div class="col-md-12 jumbotron">
+    <div class="">{{no}}. {{question}}</div>
+
+
         <div class="funkyradio">
 
             <div class="funkyradio-success">
-                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
-                <label for="radio3">{{optionA}}</label>
+                <input type="radio" name="q[{{no}}]" id="answerA{{no}}" value="A"/>
+                <label for="answerA{{no}}">{{optionA}}</label>
             </div>
 
         </div>
         <div class="funkyradio">
 
             <div class="funkyradio-success">
-                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
-                <label for="radio3">{{optionB}}</label>
+                <input type="radio" name="q[{{no}}]" id="answerB{{no}}" value="B"/>
+                <label for="answerB{{no}}">{{optionB}}</label>
             </div>
 
         </div>
         <div class="funkyradio">
 
             <div class="funkyradio-success">
-                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
-                <label for="radio3">{{optionC}}</label>
+                <input type="radio" name="q[{{no}}]" id="answerC{{no}}" value="C"/>
+                <label for="answerC{{no}}">{{optionC}}</label>
             </div>
 
         </div>
         <div class="funkyradio">
 
             <div class="funkyradio-success">
-                <input type="radio" name="q{{no}}" id="answerA{{no}}"/>
-                <label for="radio3">{{optionD}}</label>
+                <input type="radio" name="q[{{no}}]" id="answerD{{no}}" value="D"/>
+                <label for="answerD{{no}}">{{optionD}}</label>
             </div>
 
         </div>

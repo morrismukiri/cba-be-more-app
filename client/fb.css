@@ -11,8 +11,18 @@ body{
     background-color: #ffffff;
 }
 .badge-notify{
-    background:red;
+    background:black;
     position:relative;
     top: -20px;
     left: -35px;
+}
+.list-group{
+    /*width: 200px;*/
+}
+.bs-example{
+    margin: 20px;
+}
+.center{
+    float:none;
+    margin: inherit auto;
 }
