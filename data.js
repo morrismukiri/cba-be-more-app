@@ -370,4 +370,8 @@ Meteor.users.helpers({
 //AdminDashboard.addSidebarItem('Top Playes', AdminDashboard.path('/Users'), { icon: 'person' })
 
 if (Meteor.isServer) {
+    Meteor.publish('topPlayes', function () {
+        return Meteor.users.find({cumulativePoints:{$gt:0}},{sort:{cumulativePoints:-1},limit:10});
+    });
+
 }

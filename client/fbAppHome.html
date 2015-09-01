@@ -1,10 +1,10 @@
 <template name="appHome">
 
-    <div class="col-md-7 jumbotron"  style="margin-right: 20px">{{>infoContainer}}</div>
+    <div class="col-md-7 jumbotron" style="margin-right: 20px">{{>infoContainer}}</div>
     <div class="col-md-4 jumbotron">
         <div class="col-md-12">{{>info}}</div>
 
-        <div class="col-md-12">{{>leaderBoard}}</div>
+        <div class="col-md-12">{{>leaderboardNew}}</div>
     </div>
 </template>
 
@@ -43,14 +43,16 @@
 
     <div class="bs-example">
         <ol class="list-group">
-            <li class="list-group-item">
-                <a href="#"> {{name}}
-                </a>
-                <span class="badge">{{score}}</span>
-            </li>
-            <div class="list-group-separator"></div>
-            </ol>
-        </div>
+            {{#each leaderBoardPlayers}}
+                <li class="list-group-item">
+                    <a href="#" target="_blank"> {{services.facebook.name}}
+                    </a>
+                    <span class="badge">{{cumulativePoints}}</span>
+                </li>
+                <div class="list-group-separator"></div>
+            {{/each}}
+        </ol>
+    </div>
 </template>
 <template name="infoContainer">
     <div class="">
@@ -64,9 +66,11 @@
                     Now</a></li>
                 <li>Update your Be More Challenge <a href="profile" class="btn btn-sm btn-flat btn-success">Update</a>
                 </li>
-                <li>Invite Friends <a href="#" id="fbShare" class="btn btn-sm btn-info"><i class="fa fa-share"></i> Share on Facbook</a></li>
+                <li>Invite Friends <a href="#" id="fbShare" class="btn btn-sm btn-info"><i class="fa fa-share"></i>
+                    Share on Facbook</a></li>
                 <li>Answer the Daily Trivia Question</li>
-                <li>Open a CBA Account online at <a href="http://cbagroup.com/be-more" target="_blank">http://cbagroup.com/be-more</a>   </li>
+                <li>Open a CBA Account online at <a href="http://cbagroup.com/be-more" target="_blank">http://cbagroup.com/be-more</a>
+                </li>
                 <li>Top up your CBA Account with the minimum amount</li>
                 <li>Claim your be More Account <a href="#" class="btn btn-flat btn-sm">Claim your account</a></li>
                 <li>Spin The wheel of fortune and stand a chance to win one of the many prizes</li>

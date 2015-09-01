@@ -104,9 +104,13 @@ if (Meteor.isServer) {
                 addPoints(2)
             }
         },
-        getCurrentScore: function(){
+
+        getCurrentScore: function () {
             return Meteor.user().cumulativePoints;
-        }
+        },
+        //getTopPlayer: function () {
+        //    return Meteor.users.find();
+        //}
 
     });
     addPoints = function (points, user) {

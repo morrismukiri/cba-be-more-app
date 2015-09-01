@@ -27,11 +27,12 @@ Router.route('/cbaDetails', function () {
     this.render('cbaAccount');
 
 });
-//Router.route('/invite/:referrer', function () {
-//    var data={referrer:this.params.referrer}
-//    this.render('appHome',data);
-//
-//});
+
+Router.route('/invite/:referrer', function () {
+    var data={referrer:this.params.referrer}
+    this.render('appHome',data);
+
+});
 //end routes
 
 

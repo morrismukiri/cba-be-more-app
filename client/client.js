@@ -124,7 +124,7 @@ if (Meteor.isClient) {
             //ev.target.preventDefault();
             FB.ui({
                 method: 'share',
-                href: 'https://apps.facebook.com/bemorechallenge/invite/' + this.userId,
+                href: 'https://apps.facebook.com/bemorechallenge/invite/' + Meteor  .userId(),
             }, function (response) {
             });
         }
@@ -144,6 +144,23 @@ if (Meteor.isClient) {
             //console.log('From helper ' + fromHelper);
             //return fromHelper;
         }
+    });
+    Session.setDefault('topPlayers',Meteor.user());
+    //Template.leaderboardNew.created= function () {
+    //    Meteor.call('getTopPlayer', function (err, val) {
+    //        if(!err){
+    //        }
+    //    });
+    //}
+    Meteor.subscribe('topPlayes');
+    Template.leaderboardNew.helpers({
+        //name:'Morris Mg',
+        //cumulativePoints:33,
+        leaderBoardPlayers:function(){
+            console.log(Session.get('topPlayers'));
+            return Meteor.users.find({},{sort:{cumulativePoints:-1},limit:10});
+        }
+
     });
 
 
