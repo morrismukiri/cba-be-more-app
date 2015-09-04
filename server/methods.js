@@ -98,6 +98,11 @@ if (Meteor.isServer) {
                 data: data,
                 recordedTime: new Date()
             });
+            if(activity==='share'){
+                addPoints(1);
+            }else if(activity==='Wheelspin'){
+                addPoints(20);
+            }
         },
         checkQuestion: function (quiz, answer) {
             if (oneTimeAnswers[quiz].A === answer) {

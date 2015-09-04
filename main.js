@@ -27,7 +27,10 @@ Router.route('/cbaDetails', function () {
     this.render('cbaAccount');
 
 });
+Router.route('/spinWheel', function () {
+    this.render('spinWheel');
 
+});
 Router.route('/invite/:referrer', function () {
     var data={referrer:this.params.referrer}
     this.render('appHome',data);

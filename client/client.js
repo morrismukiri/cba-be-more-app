@@ -107,14 +107,15 @@ if (Meteor.isClient) {
             //get the answers
             ev.preventDefault();
 
-            var QnA = [],
-                points = 0;
+            var QnA ={};
 
             for (i = 1; i <= 5; i++) {
+                QnA['q[' + i + ']']= ev.target['q[' + i + ']'].value;
                 Meteor.call('checkQuestion', i - 1, ev.target['q[' + i + ']'].value);
             }
-            data = ev.target;
-            Meteor.call('addActivity', 'quiz', data);
+
+            console.log(QnA)
+            Meteor.call('addActivity', 'quiz', QnA);
             Router.go('/');
 
         }
@@ -126,6 +127,8 @@ if (Meteor.isClient) {
                 method: 'share',
                 href: 'https://apps.facebook.com/bemorechallenge/invite/' + Meteor  .userId(),
             }, function (response) {
+                console.log('shared');
+                Meteor.call('addActivity','share',null);
             });
         }
     });
@@ -162,6 +165,22 @@ if (Meteor.isClient) {
         }
 
     });
+    Template.spinWheel.rendered= function () {
+        begin();
+    }
+    Template.spinWheel.events({
+        'click #shareGift': function (ev) {
+            ev.preventDefault();
+            FB.ui({
+                method: 'share',
+                href: 'https://apps.facebook.com/bemorechallenge/invite/' + Meteor  .userId(),
+            }, function (response) {
+                console.log('shared');
+                Meteor.call('addActivity','share',null);
+                ev.target.style.display='none';
+            });
 
+        }
+    });
 
 }
