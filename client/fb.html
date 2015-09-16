@@ -2,36 +2,47 @@
     <title>CBA Be More Challenge</title>
     <link rel="stylesheet" href="main.css" type="text/css"/>
     <script type='text/javascript' src='winwheel_1.2.js'></script>
+    <meta property="og:image" content="https://cbabemore.co.ke/banner.png">
 </head>
 <body class="">
 
 </body>
 <template name="fbApp">
-    {{>topbar}}
-    <div class="container">
+    {{#if isOperaMini}}
+        <h1>Sorry! This app uses features not supported by Opera mini. Please use a decent browser or the native
+            facebook app.
+        </h1>
+    {{else}}
+        {{>topbar}}
+        <div class="container">
+<div class="row">
+            {{#if currentUser}}
+            {{! >appHome}}
+                {{#if toUpdateProfile}}
 
-        {{#if currentUser}}
-            {{>appHome}}
-            {{#if currentLevel 0}}
+                    {{>updateProfileNew}}
+                    <!-- Just logged in -->
 
-                {{>appHome}}
-                <!--logged in hasn 0-->
-
-            {{else}}
-                {{#if currentLevel 1}}
-                    {{>topbar}}
-                    {{>quiz}}
                 {{else}}
-                    {{#if currentLevel 2}}
-                        {{>app}}
+                    <!-- Just Updated Be more Profile  -->
+                    {{#if toAnsewerTrivia}}
+
+                        {{>oneTimeQuiz}}
+                    {{else}}
+                        <!-- Just Answered General knowledge quiz -->
+                        {{! #if isLevel 2}}
+                        {{>appHome}}
+                    {{! /if}}
                     {{/if}}
                 {{/if}}
-            {{/if}}
 
-        {{else}}
-            {{>unLoggedInBody}}
-        {{/if}}
-    </div>
+            {{else}}
+                {{>unLoggedInBody}}
+            {{/if}}
+        </div>
+        </div>
+    {{/if}}
+
 </template>
 <template name="app">
     <div class="topbar">
@@ -49,61 +60,67 @@
     {{/if}}
 </template>
 <template name="updateProfile">
-    <h1>Update your Be More Profile</h1>
+    <h1 class="h1">Update your Be More Profile</h1>
 
     <div class="col-md-8">
-        {{> quickForm collection='Meteor.users' schema='Schemas.User' doc=currentUserInfo id="updateProfile" type="update" omitFields="emails.$.verified,createdAt,services,CBAAccount,roles,currentLevel,cumulativePoints"}}
+        {{> quickForm collection='Meteor.users' schema='Schemas.User' doc=currentUserInfo id="updateProfile" type="update" omitFields="emails.$.verified,createdAt,services,CBAAccount,roles,currentLevel,cumulativePoints,wonItem,wonItemCollected"}}
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</template>
+<template name="updateProfileNew">
+    <h1 class="h1 forced-font text-primary">Update your Be More Profile</h1>
+
+    <div class="container">
+
+
+        <div class="col-md-8">
+            {{> quickForm collection='Meteor.users' schema=userProfileSchema doc=currentUserInfoUpdate id="updateProfileNew" type="update"  omitFields="emails,createdAt,services,CBAAccount,roles,currentLevel,cumulativePoints,wonItem,wonItemCollected"}}
+        </div>
     </div>
 </template>
 <template name="cbaAccount">
-    {{> quickForm id="cbaAccountForm" schema=Schamas.CBAAccount collection=Mrteor.users omitFields="verified"}}
+   <div class="container">{{> quickForm id="cbaAccountForm" schema=Schamas.CBAAccount doc=currentUserInfoUpdate collection='Meteor.users' omitFields="verified"  type="update" omitFields="emails,createdAt,services,profile,roles,currentLevel,cumulativePoints,CBAAccount.verified,wonItem,wonItemCollected"}}</div>
 </template>
 <template name="unLoggedInBody">
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4 center">
-                <button id="facebook-login" class="btn btn-info facebook-login"><i class="icon  icon-facebook"></i>
-                    Login with Facebook
-                </button>
-            </div>
+        <div class="col-sm-12 text-primary lead jumbotron">Welcome to the CBA Be More Challenge which enables you to
+            develop your personal and
+            professional skills through a series of competitions and learning opportunities. You ultimately stand to be
+            selected for certified professional training, a paid internship/mentorship opportunity and investment
+            package all worth upto KShs. 100,000
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-12">
             {{>howItWorks}}
         </div>
-        <div class="col-md-6">
-            {{>rewards}}
+        <div class="col-sm-12">
+            {{! >rewards}}
         </div>
-        <div class="row">
-            <div class="col-md-2 col-md-offset-5 center">
-                <button id="facebook-login-bottom" class="btn btn-info facebook-login"><i
-                        class="icon  icon-facebook"></i> Login with Facebook
+        <div class="row jumbotron">
+            <div class="col-sm-12 center text-primary copy lead" id="tnc">
+                <label for="acceptTnC"> <input type="checkbox" name="I accept" id="acceptTnC"/> I accept the <a
+                        href="/terms">Terms
+                    and Conditions</a></label>
+                <button id="facebook-login-bottom" class="btn btn-info facebook-login disabled" disabled="true"><i
+                        class="icon  icon-facebook"></i> Start
                 </button>
             </div>
         </div>
     </div>
 </template>
-<!--<template name="login">-->
-<!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" data-max-rows="3" data-size="xlarge"-->
-<!--data-show-faces="true" data-auto-logout-link="true">-->
-<!--</fb:login-button>-->
-<!--&lt;!&ndash;<div class="fb-login-button" data-max-rows="3" data-size="xlarge" data-show-faces="true" data-auto-logout-link="true"></div>&ndash;&gt;-->
-<!--</template>-->
 
 <template name="topbar">
-    <nav class="navbar navbar-material-black">
+    <nav class="navbar navbar-special">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/" title="Home">
                     <!--<img alt="Brand" src="...">-->
-                    CBA Be More Challenge
-                </a>
-                {{! #if currentUser}}
-                <a href="" class="pull-right">
-                    {{currentUser.services.facebook.name}}</a>
-                <a href="profile" class="nav-item">Be More Profile</a>
-                <a href="#" class="nav-item">Leader Board</a>
-                {{! /if}}
+                    <i class="fa fa-home"></i> &nbsp;
+
+                </a><br/>
+                <a href="">&nbsp; </a>
             </div>
         </div>
     </nav>
@@ -135,7 +152,7 @@
                             </div>
                             <div class="radio radio-primary">
                                 <label>
-                                    <input type="radio" name="optionsRadios" id="radA{{_id}}" value="B" checked="">
+                                    <input type="radio" name="optionsRadios" id="radA{{_id}}" value="C" checked="">
                                     {{optionC}}
                                 </label>
                             </div>
@@ -165,11 +182,11 @@
 </template>
 <template name="howItWorksItem">
     <div class="list-group-item">
-        <div class="row-action-primary material-deep-blue-900">
-            <i class="{{icon}}"></i>
+        <div class="row-action-primary material-deep-blue-900 text-primary">
+            {{no}}
         </div>
         <div class="row-content">
-            <div class="least-content">{{no}}</div>
+            <!--<div class="least-content">{{no}}</div>-->
             <h4 class="list-group-item-heading">{{title}}</h4>
 
             <p class="list-group-item-text">{{description}}</p>
@@ -212,7 +229,4 @@
         </div>
     </div>
     <div class="list-group-separator"></div>
-</template>
-<template name="profile">
-
 </template>

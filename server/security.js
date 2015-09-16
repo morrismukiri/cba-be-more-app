@@ -1,6 +1,6 @@
 if(Meteor.isServer) {
-    Security.permit(['insert', 'update', 'remove']).collections([
+    Security.permit(['update', 'remove']).collections([
         Meteor.users
     ]).never().apply();
-    Meteor.users.permit('update').ifLoggedIn().exceptProps(['profile.isAdmin','roles', 'emails.$.verified','CBAAccount.verified','currentLevel','cumulativePoints']).apply();
+    Meteor.users.permit('update').ifLoggedIn().exceptProps(['profile.isAdmin','roles', 'emails.$.verified','CBAAccount.verified','currentLevel','cumulativePoints','wonItem']).apply();
 }

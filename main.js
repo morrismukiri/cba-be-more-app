@@ -8,7 +8,8 @@ Router.route('/', function () {
     //this.render('login');
 });
 Router.route('/profile', function () {
-    this.render('updateProfile');
+    //this.render('updateProfile');
+    this.render('updateProfileNew');
 
 
 });
@@ -31,15 +32,21 @@ Router.route('/spinWheel', function () {
     this.render('spinWheel');
 
 });
+Router.route('/terms', function () {
+    this.render('terms');
+});
+Router.route('/trivia', function () {
+    this.render('trivia');
+});
 Router.route('/invite/:referrer', function () {
-    var data={referrer:this.params.referrer}
-    this.render('appHome',data);
+    var data = {referrer: this.params.referrer}
+    this.render('appHome', data);
 
 });
 //end routes
 
 
-SimpleSchema.debug = true;
+//SimpleSchema.debug = true;
 //Accounts.config({
 //    forbidClientAccountCreation: false
 //});
@@ -49,6 +56,6 @@ SimpleSchema.debug = true;
 
 //ServiceConfiguration.configurations.insert({
 //    service: 'facebook',
-//    appId: '1654719238076726',
-//    secret: '034f3d2121eb0fe05b44802ec7013ba7'
+//    appId: '1654065948142055',
+//    secret: '6e046603487c934150125fcb220cd265'
 //});

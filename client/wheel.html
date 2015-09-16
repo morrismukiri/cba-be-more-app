@@ -1,37 +1,48 @@
-
 <!--<body>-->
 <template name="spinWheel">
     {{>topbar}}
-    <h3 id="wheelTitle">Spin the Wheel of fortune</h3>
+
     <div align="center" class="container">
 
         <hr/>
 
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
-                <td>
-                    <div class="power_controls">
-                        <br/>
-                        <br/>
-                        <em>Select wheel power and click spin</em>
-                        <table class="power" cellpadding="10" cellspacing="0">
-                            <tr>
-                                <th align="center">Power</th>
-                            </tr>
-                            <tr>
-                                <td width="78" align="center" id="pw3" onClick="powerSelected(3);">High</td>
-                            </tr>
-                            <tr>
-                                <td align="center" id="pw2" onClick="powerSelected(2);">Med</td>
-                            </tr>
-                            <tr>
-                                <td align="center" id="pw1" onClick="powerSelected(1);">Low</td>
-                            </tr>
-                        </table>
-                        <br/>
-                        <img id="spin_button" src="./spin_off.png" alt="Spin" onClick="startSpin();"/>
-                        <br/><br/>
-                    </div>
+                <td><h3 id="wheelTitle">Spin the Wheel of fortune</h3>
+                    {{#if accountVerified}}
+                        {{#if hasSpinWheel}}
+                            <h3>You have already spin the wheel.</h3>
+                            <a href="/" class="btn btn-success">Go Home</a>
+                        {{else}}
+
+
+                            <div class="power_controls">
+                                <br/>
+                                <br/>
+                                <em>Select wheel power and click spin</em>
+                                <table class="power" cellpadding="10" cellspacing="0">
+                                    <tr>
+                                        <th align="center">Power</th>
+                                    </tr>
+                                    <tr>
+                                        <td width="78" align="center" id="pw3" onClick="powerSelected(3);">High</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" id="pw2" onClick="powerSelected(2);">Med</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center" id="pw1" onClick="powerSelected(1);">Low</td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <img id="spin_button" src="./spin_off.png" alt="Spin" onClick="startSpin();"/>
+                                <br/><br/>
+                            </div>
+                        {{/if}}
+                    {{else}}
+                        <h1>Your account needs to be verified to spin the wheel</h1>
+                        <a href="/" class="btn btn-success">Go Home</a>
+                    {{/if}}
                 </td>
                 <td width="438" height="582" class="the_wheel" align="center" valign="center">
                     <canvas class="the_canvas" id="myDrawingCanvas" width="434" height="434">

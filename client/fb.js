@@ -18,7 +18,7 @@ if (Meteor.isClient) {
         //load facebook sdk
         window.fbAsyncInit = function() {
             FB.init({
-                appId      : '1654719238076726',
+                appId      : '1654065948142055',
                 xfbml      : true,
                 version    : 'v2.4'
             });

@@ -1,19 +1,25 @@
 <template name="appHome">
 
-    <div class="col-md-7 jumbotron" style="margin-right: 20px">{{>infoContainer}}</div>
-    <div class="col-md-4 jumbotron">
-        <div class="col-md-12">{{>info}}</div>
-
-        <div class="col-md-12">{{>leaderboardNew}}</div>
+    <div class="col-md-8 ">
+        <div class="jumbotron"> {{>infoContainer}}</div>
+    </div>
+    <div class="jumbotron col-md-4 ">
+        <div class=" ">
+            <div class="col-md-12">{{>info}}</div>
+            <div class="col-md-12">{{>leaderboardNew}}</div>
+        </div>
     </div>
 </template>
 
 <template name="info">
     <!--points-->
     <div class="panel panel-primary">
-        <button class="btn btn-invese btn-lg btn-link center" style="font-size:24px;">
+
+        <button class="btn btn-invese btn-lg btn-link center" style="font-size:18px;">
+            {{#if img}} <img src="{{img}}" alt="Profile_pic"/>{{/if}}
             score <span class="glyphicon glyphicon-user"></span>
         </button>
+
         <span class="badge badge-notify">{{currentScore}}</span>
     </div>
     <!--points-->
@@ -39,13 +45,13 @@
     </div>
 </template>
 <template name="leaderboardNew">
-    <h3>Top Players</h3>
+    <h3>Top Players in {{currentInstitution}}</h3>
 
     <div class="bs-example">
         <ol class="list-group">
             {{#each leaderBoardPlayers}}
                 <li class="list-group-item">
-                    <a href="#" target="_blank"> {{services.facebook.name}}
+                    <a href="#" > {{services.facebook.name}}
                     </a>
                     <span class="badge">{{cumulativePoints}}</span>
                 </li>
@@ -55,28 +61,77 @@
     </div>
 </template>
 <template name="infoContainer">
-    <div class="">
-        <h3>Thankyou for trying out the Be More Challenge</h3>
+    <div class="container">
+        <!--<h3>Thankyou for trying out the Be More Challenge</h3>-->
+        <h2 class="h2">Start earning points...</h2>
+        <br/>
 
+        <div class="home-text">
 
-        <div class="container">
-            <h3>How to earn points</h3>
             <ol class="list-group">
-                <li class="">Answer the General Knowledge Quiz <a href="/quiz" class="btn btn-sm btn-flat btn-success">Answer
-                    Now</a></li>
-                <li>Update your Be More Challenge <a href="profile" class="btn btn-sm btn-flat btn-success">Update</a>
+                <li class="text-primary list-item"><i class="fa fa-check-square-o"></i> Answer the General Knowledge
+                    Quiz <span class="point-indicator">(2 points per correct answer)</span> <br/>
+                    <!--<a href="#" class="btn btn-sm btn-flat btn-success disabled">Answer Now</a>-->
                 </li>
-                <li>Invite Friends <a href="#" id="fbShare" class="btn btn-sm btn-info"><i class="fa fa-share"></i>
-                    Share on Facbook</a></li>
-                <li>Answer the Daily Trivia Question</li><br/>
-                <li>Open a CBA Account online at <a href="http://cbagroup.com/be-more" target="_blank">http://cbagroup.com/be-more</a>
-                    <br/>Top up your CBA Account with the minimum amount
+                <!--<li class="text-primary"><i class="fa fa-check-square-o"></i> Update your Be More Challenge Profile<br/>-->
+                <!--<a href="#" class="btn btn-sm btn-flat btn-success disabled">Update</a>-->
+                <!--</li>-->
+                {{#if hasShared}}
+                    <li class="text-primary"><i class="fa fa-check-square-o"></i> Invite Friends<span class="point-indicator"> (1 point)</span> </li>
+                {{else}}
+                    <li> Invite Friends <a href="#" id="fbShare" class="btn btn-sm btn-success"><i class="fa fa-share"></i>Share on Facebook<span class="point-indicator">(1 point)</span></a></li>
+                {{/if}}
+                {{#if answeredTrivia}}
+                    <li class="text-primary"><i class="fa fa-check-square-o"></i> Answer the Daily Trivia Question <span class="point-indicator">(1 point per correct answer)</span></li>
+                {{else}}
+                    <li class="list-item"> Answer the Daily Trivia Question <span class="point-indicator">(1 point per correct answer)</span> <a href="/trivia" class="btn btn-success btn-sm">Answer today's trivia</a><br/></li>
+                {{/if}}
+                <li class="list-item">Open a Be More Account at <a href="http://cbagroup.com/be-more" target="_blank">www.cbagroup.com/bemore</a>
+                    <a href="/cbaDetails" class="btn btn-success btn-sm ">Enter Account Details to spin the wheel</a>
                 </li>
-                <!--<li>Top up your CBA Account with the minimum amount</li>-->
-                <li>Claim your be More Account <a href="#" class="btn btn-flat btn-sm">Claim your account</a></li>
-                <li>Spin The wheel of fortune and stand a chance to win one of the many prizes <a href="/spinWheel" class="btn btn-flat">spin the wheel</a> </li>
-
+                {{#if accountVerified}}
+                    <li class="list-item">Spin the Wheel of Fortune to Win a Prize after Account is Verified <span class="point-indicator">(50 Points)</span> <a href="/spinWheel"
+                                                                                                                            class="btn btn-success btn-sm">spin
+                        the wheel</a></li>
+                    {{else}}
+                <li class="list-item">Spin the Wheel of Fortune to Win a Prize after Account is Verified  <span class="point-indicator">(50 Points) </span> <a href="/"
+                                                                                                            class="btn btn-success btn-sm disabled">spin
+                    the wheel</a></li>
+{{/if}}
             </ol>
+        </div>
+    </div>
+</template>
+<template name="trivia">
+    {{#if answeredTrivia}}
+        <h1>You have already answered today's trivia. Try again tomorrow</h1>
+        <a href="/" class="btm btn-success">Go Back</a>
+        {{else}}
+
+    <form class="container" id="triviaForm">
+        <ul class="list-unstyled list-group">
+            {{#each triviaQuestions}}
+                <div class="question-container">
+                    <li class="list-item">
+                        <!--<div class="jumbotron">-->
+                        {{>question}}
+                        <!--</div>-->
+                    </li>
+
+
+                </div>
+
+            {{/each}}
+        </ul>
+        <input type="submit" value="Submit" class="btn btn-success"/>
+    </form>
+    {{/if}}
+</template>
+<template name="terms">
+    {{>topbar}}
+    <div class="container">
+        <div class="jumbotron">
+            {{tnc.content}}
         </div>
     </div>
 </template>

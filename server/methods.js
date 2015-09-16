@@ -24,6 +24,22 @@ if (Meteor.isServer) {
             {
                 no: 6,
                 A: 'B'
+            },
+            {
+                no: 7,
+                A: 'B'
+            },
+            {
+                no: 8,
+                A: 'B'
+            },
+            {
+                no: 9,
+                A: 'A'
+            },
+            {
+                no: 10,
+                A: 'B'
             }
         ];
     Meteor.methods({
@@ -45,6 +61,10 @@ if (Meteor.isServer) {
                                 //,
                                 //'verified': false
                             }
+                        },
+                        $set:{
+                            'currentLevel':0,
+                            'cumulativePoints':1
                         }
                     });
                 }
@@ -64,7 +84,7 @@ if (Meteor.isServer) {
             return allowed;
         },
         getCurrentUserInfo: function () {
-            console.log('current user: ' + this.userId);
+            //console.log('current user: ' + this.userId);
             if (this.userId) {
                 console.log('current user: ' + this.userId);
                 //return Meteor.user();
@@ -101,12 +121,35 @@ if (Meteor.isServer) {
             if(activity==='share'){
                 addPoints(1);
             }else if(activity==='Wheelspin'){
-                addPoints(20);
+                Meteor.users.update({_id: Meteor.userId()},{$set:{wonItem:data.won}});
+                addPoints(50);
+                changeLevel(5);
+            }else if(activity==='profileEdit'){
+                console.log('profile edited');
+                //addPoints(1);
+               changeLevel(LEVEL_QUIZ);
+            }else if(activity==='quiz'){
+                console.log('quiz ansewered');
+               changeLevel(LEVEL_ACCOUNT);
+            }else if(activity==='signup'){
+                console.log('new signup');
+                addPoints(1);
+                console.log('set level to '+LEVEL_PROFILE);
+                changeLevel(LEVEL_PROFILE);
+            }else if(activity==='trivia'){
+                console.log('Answered trivia question');
+                //addPoints(1);
+                //changeLevel(0);
             }
         },
         checkQuestion: function (quiz, answer) {
             if (oneTimeAnswers[quiz].A === answer) {
                 addPoints(2)
+            }
+        },
+        checkTrivia: function (qData) {
+            if(qData.a=== Questions.findOne({_id:qData.q}).answer ){
+                addPoints(1);
             }
         },
 
@@ -120,7 +163,7 @@ if (Meteor.isServer) {
     });
     addPoints = function (points, user) {
         user = user ? user : Meteor.userId();
-        var curPoints = Meteor.user().cumulativePoints;
+        var curPoints = Meteor.user().cumulativePoints?Meteor.user().cumulativePoints:0;
         Meteor.users.update(
             {_id: user}, {
                 $set: {
@@ -128,5 +171,14 @@ if (Meteor.isServer) {
                 }
             });
     }
-
+    changeLevel = function (level) {
+        //user = user ? user : Meteor.userId();
+        Meteor.users.update(
+            {_id: Meteor.userId()}, {
+                $set: {
+                    'currentLevel': level
+                }
+            });
+        console.log('update successful to level '+ level);
+    }
 }

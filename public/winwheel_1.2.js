@@ -58,18 +58,18 @@ var determinedGetUrl = "";  	 // Set to URL of the server-side process to load v
 // In order to work correctly the the start and end angles need to match the begining and end of the segments for the prizes in your wheel image.
 // Thinking about a clock face, 0 is at the 12 o'clock, 90 is at the 3 o'clock, 180 is 6 o'clock, 270 is 9 o'clock.
 var prizes = new Array();
-prizeNames = ["Water Bottle", "CBA Cash Credit", "Airtime", "Nothing", "CBA Cash Credit",
-    "Airtime", "Nothing", "CBA Cash Credit", "Airtime", "Nothing", "Water Bottle", "Nothing",
-    "Flash Disk", "CBA Cash Credit", "Airtime", "CBA Cash Credit", "Water Bottle", "Flash Disk"];
+prizeNames = ["Water Bottle", "Nothing", "Event Invitation", "CBA Cash Credit", "Nothing",
+    "Event Invitation", "CBA Cash Credit", "Water Bottle", "CBA Cash Credit", "Flash Disk", "Nothing", "Event Invitation",
+    "Nothing", "Water Bottle", "Nothing",  "Flash Disk"];
 
 var startAngle = 0,
-    difference = 22;
+    difference = 22.5;
 for (i = 0; i < 16; i++) {
-    temp = {"name": prizeNames[i], "startAngle": startAngle, "endAngle": startAngle + difference}
-    startAngle += difference + 0.5;
+    temp = {"name": prizeNames[i], "startAngle": startAngle, "endAngle": startAngle + difference};
+    startAngle += difference;
     prizes.push(temp)
 }
-console.log(prizes);
+//console.log(prizes);
 //prizes[14] = {"name" : "Prize 8", "startAngle" : 171, "endAngle" : 344.5};
 //prizes[15] = {"name" : "Prize 8", "startAngle" : 171, "endAngle" : 195};
 //prizes[16] = {"name" : "Prize 8", "startAngle" : 171, "endAngle" : 195};
@@ -229,7 +229,7 @@ function ajaxCallback() {
 
     // If code got this far we know all is well, so call startSpin function passing the response to it (which should be angle or prize).
     // If you need to pass multiple parameters back from the server site process I would look in to doing some JSON then decoding it here.
-    startSpin(xhr.responseText);
+    startSpin(30);
 }
 
 // ==================================================================================================================================================
@@ -342,12 +342,25 @@ function doSpin() {
                     // Do something with the knowlege. For this example the user is just alerted, but you could play a sound,
                     // change the innerHTML of a div to indicate the prize etc - up to you.
                     var shareButtonOnWin = "";
-                    if (prizes[x]['name'] !== "Nothing") {
-                        shareButtonOnWin = " <a href='/' class='btn btn-info' id='shareGift'><i class='fa fa-share'></i> Share on your Timeline</a>";
+                    //if (prizes[x]['name'] !== "Nothing") {
+                    //    shareButtonOnWin = " <a href='/' class='btn btn-info' id='shareGift'><i class='fa fa-share'></i> Share on your Timeline</a>";
+                    //
+
+
+                    if(prizes[x]['name']==='CBA Cash Credit'){
+                        msg="Congratulations! You have won an account top-up of Ksh. 500";
+                    }else if(prizes[x]['name']==='Water Bottle'){
+                        msg="Congratulations! Collect your water bottle at the CBA activation tent";
+                    }else if(prizes[x]['name']==='Flash Disk'){
+                        msg="Congratulations! Collect your flash drive at the CBA activation tent";
+                    }else if(prizes[x]['name']==='Event Invitation'){
+                        msg="Congratulations! Register your name for a CBA event invitation at the CBA activation tent";
+                    }else{
+                        msg='Sorry, you were not lucky';
                     }
-                    document.getElementById('wheelTitle').innerHTML = "You have won " + prizes[x]['name'] + shareButtonOnWin +"  <a href='/' class='btn btn-success'>Go Back</a>";
+                    document.getElementById('wheelTitle').innerHTML =msg +"  <a href='/' class='btn btn-success'>Go Back</a>";
                     //alert("You won " + prizes[x]['name'] + "!\nClick 'Play Again' to have another go.");
-                    Meteor.call('addEvent','Wheelspin',{won:prizes[x]['name']});
+                    Meteor.call('addActivity','Wheelspin',{won:prizes[x]['name']});
                     break;
                 }
             }

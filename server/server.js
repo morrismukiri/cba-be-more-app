@@ -5,7 +5,7 @@ if (Meteor.isServer) {
 
         smtp = {
             username: 'info@cbabemore.co.ke',   // eg: server@gentlenode.com
-            password: 'morris@cba2015!',   // eg: 3eeP1gtizk5eziohfervU
+            password: 'ondemand',   // eg: 3eeP1gtizk5eziohfervU
             server: 'mail.cbabemore.co.ke',  // eg: mail.gandi.net
             port: 25
         };

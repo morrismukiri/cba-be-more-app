@@ -1,39 +1,37 @@
 <template name="oneTimeQuiz">
-    {{>topbar}}
-    <form class="container" id="oneTimeQuiz" method="post" >
-        <!--<div class="radio">-->
-        <!--<label>-->
-        <!--<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">-->
-        <!--Option one is this-->
-        <!--</label>-->
-        <!--</div>-->
-        <ul class="list-unstyled list-group">
-            {{#each questions}}
-                <div class="question-container">
+    {{#if hasAnswerdQuiz}}
+        <h1 class="container">You have already answered the general knowledge quiz</h1>
+        <a href="/" class="btn btn-success">Go Home</a>
+    {{else}}
+        <form class="container" id="oneTimeQuiz" method="post">
 
-
-                    <li class="list-item">
-                        <!--<div class="jumbotron">-->
+            <ul class="list-unstyled list-group">
+                {{#each questions}}
+                    <div class="question-container">
+                        <li class="list-item">
+                            <!--<div class="jumbotron">-->
                             {{>question}}
-                        <!--</div>-->
-                    </li>
+                            <!--</div>-->
+                        </li>
 
 
-                </div>
+                    </div>
 
-            {{/each}}
-        </ul>
-        <!--<ul class="pager">-->
-        <!--<li><a href="#">Previous</a></li>-->
-        <!--<li><a href="#">Next</a></li>-->
-        <!--</ul>-->
+                {{/each}}
+            </ul>
+            <!--<ul class="pager">-->
+            <!--<li><a href="#">Previous</a></li>-->
+            <!--<li><a href="#">Next</a></li>-->
+            <!--</ul>-->
 
-        <input type="submit" class="btn btn-lg btn-success" data-content="Questions saved" data-toggle="snackbar" data-timeout="10" value="Finish"/>
-    </form>
+            <input type="submit" class="btn btn-lg btn-success" data-content="Questions saved" data-toggle="snackbar"
+                   data-timeout="10" value="Finish"/>
+        </form>
+    {{/if}}
 </template>
 <template name="question">
     <div class="col-md-12 jumbotron">
-    <div class="">{{no}}. {{question}}</div>
+        <div class="text-primary">{{no}}. {{question}}</div>
 
 
         <div class="funkyradio">

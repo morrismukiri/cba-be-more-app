@@ -1,3 +1,8 @@
+LEVEL_BEGGINER = 0;
+LEVEL_PROFILE = 1;
+LEVEL_QUIZ = 2;
+LEVEL_ACCOUNT = 3;
+LEVEL_WHEEL = 4;
 Schemas = {},
     Questions = new Mongo.Collection('questions'),
     rewards = new Mongo.Collection('rewards'),
@@ -8,12 +13,20 @@ Schemas = {},
     howItWorksItems = new Mongo.Collection('howItWorksItems');
 terms = new Mongo.Collection('terms');
 gameUsers = Meteor.users;
-var allowedUniversities = participatingInstitutions.find({}).fetch();
-//[
-//    'Nairobi University',
-//    'Kenyatta University',
-//    'Jomo Kenyatta Univeristy Of Agriculture and Technology',
-//    'Strathmore Univeristy', 'United States International University', 'others'];
+var allowedUniversities =
+        //participatingInstitutions.find({}).fetch();
+        [
+            'Africa Nazarene University',
+            'Catholic University of E.A.',
+            'Daystar University',
+            'JKUAT',
+            'Kenyatta University',
+            'Strathmore',
+            'University of Nairobi',
+            'USIU-Africa',
+            'Other University'
+        ],
+    counties = ['Baringo county', 'Bomet county', 'Bungoma county', 'Busia county', 'Elgeyo-Marakwet county', 'Embu county', 'Garissa county', 'Homabay county', 'Isiolo county', 'Kajiado county', 'Kakamega county', 'Kericho county', 'Kiambu county', 'Kilifi county', 'Kirinyaga county', 'Kisii county', 'kisumu county', 'Kitui county', 'Kwale county', 'Laikipia county', 'Lamu county', 'Machakos county', 'Makueni county', 'Mandera county', 'Marsabit county', 'Meru county', 'Migori county', 'Mombasa county', 'Murang\'a county', 'Nairobi city county', 'Nakuru county', 'Nandi county', 'Narok county', 'Nyamira county', 'Nyandarua county', 'Nyeri county', 'Samburu county', 'Siaya county', 'Taita-Taveta county', 'Tana River county', 'Tharaka-Nithi county', 'Trans Nzoia county', 'Turkana county', 'Uasin Gishu county', 'Vihiga county', 'Wajir county', 'West Pokot county'];
 Schemas.participatingInstitutions = new SimpleSchema({
     name: {type: String}
 });
@@ -66,7 +79,9 @@ Schemas.howItWorksItems = new SimpleSchema({
         type: String
     },
     description: {
-        type: String
+        type: String,
+        optional: true
+
     }
 });
 howItWorksItems.attachSchema(Schemas.howItWorksItems);
@@ -87,17 +102,6 @@ Schemas.rewards = new SimpleSchema({
 });
 rewards.attachSchema(Schemas.rewards);
 
-
-//Schemas.institution = new SimpleSchema({
-//    name: {
-//        type: String,
-//        optional: true
-//    },
-//    code: {
-//        type: String,
-//        optional: true
-//    }
-//});
 Schemas.CBAAccount = new SimpleSchema({
     name: {
         type: String,
@@ -105,7 +109,8 @@ Schemas.CBAAccount = new SimpleSchema({
     },
     accountNo: {
         type: String,
-        optional: true
+        optional: true,
+        label: 'First six digits of account number'
     },
     email: {
         type: String,
@@ -115,9 +120,70 @@ Schemas.CBAAccount = new SimpleSchema({
     verified: {
         type: Boolean,
         optional: true
+        //,
+        //allowedValues:[true,false]
     }
 });
+Schemas.CBAAccountUpdate = new SimpleSchema({
+    name: {
+        type: String,
+        optional: true
+    },
+    accountNo: {
+        type: String,
+        optional: true,
+        label: 'First six digits of account number'
 
+    },
+    email: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Email,
+        optional: true
+    },
+    verified: {
+        type: Boolean,
+        optional: true
+        //,
+        //allowedValues:[true,false]
+    }
+});
+Schemas.UserProfileUpdate = new SimpleSchema({
+    firstName: {
+        type: String,
+        regEx: /^[a-zA-Z']{2,25}$/
+        //optional: true
+    },
+    lastName: {
+        type: String,
+        regEx: /^[a-zA-Z']{2,25}$/
+        //optional: true
+    },
+    phoneNo: {
+        type: String,
+        regEx: /^(0|\+?254)7([0-3|7])(\d){7}$/
+        //optional: true
+    },
+    ageGroup: {
+        type: String,
+        allowedValues: ['18-24', '24-29']
+        //optional: true
+    },
+    gender: {
+        type: String,
+        allowedValues: ['Male', 'Female']
+    },
+    institution: {
+        type: String,
+        //optional: true,
+
+        allowedValues: allowedUniversities
+    },
+    location: {
+        type: String,
+        //optional: true,
+        allowedValues: counties
+    }
+});
 Schemas.UserProfile = new SimpleSchema({
     firstName: {
         type: String,
@@ -131,7 +197,7 @@ Schemas.UserProfile = new SimpleSchema({
     },
     phoneNo: {
         type: String,
-        regEx: /(0|\+?254)7([0-3|7])(\d|){7}/,
+        regEx: /^(0|\+?254)7([0-3|7])(\d){7}$/,
         optional: true
     },
     ageGroup: {
@@ -144,20 +210,24 @@ Schemas.UserProfile = new SimpleSchema({
         allowedValues: ['Male', 'Female'],
         optional: true
     },
-    //organization : {
-    //    type: String,
-    //    regEx: /^[a-z0-9A-z .]{3,30}$/,
-    //    optional: true
-    //},
     institution: {
         type: String,
         optional: true,
         allowedValues: allowedUniversities
-        //function () {
-        //    return Meteor.call('getParticipatingInstitutions');
-        //}
 
+    },
+    location: {
+        type: String,
+        optional: true,
+        allowedValues: counties
     }
+});
+SimpleSchema.messages({
+    regEx: [
+        {msg: 'Invalid value'},
+        {exp: /^[a-zA-Z']{2,25}$/, msg: 'Please enter a valid Name'},
+        {exp: /^(0|\+?254)7([0-3|7])(\d){7}$/, msg: 'Please enter a valid Kenyan mobile phone number'}
+    ]
 });
 
 Schemas.User = new SimpleSchema({
@@ -185,7 +255,8 @@ Schemas.User = new SimpleSchema({
         type: Date,
         defaultValue: function () {
             return new Date();
-        }
+        },
+        optional:true
     },
     profile: {
         type: Schemas.UserProfile,
@@ -223,6 +294,18 @@ Schemas.User = new SimpleSchema({
     cumulativePoints: {
         type: Number,
         optional: true
+
+    },
+    wonItem: {
+        type: String,
+        optional: true,
+
+    },
+    wonItemCollected: {
+        type: Boolean,
+        optional: true
+        //allowedValues:[true,false]
+
     }
     //,
     // Option 2: [String] type
@@ -235,7 +318,26 @@ Schemas.User = new SimpleSchema({
 });
 
 Meteor.users.attachSchema(Schemas.User);
-
+Schemas.UserUpdate = new SimpleSchema({
+    profile: {
+        type: Schemas.UserProfileUpdate
+    }
+});
+account=Meteor.users;
+//Schemas.account = new SimpleSchema({
+//    name: {
+//        type: String,
+//
+//    },
+//    verified: {
+//        type: Boolean
+//    }
+//});
+//Schemas.accountVerify = new SimpleSchema({
+//    CBAAccount: {
+//        type: Schemas.account
+//    }
+//});
 Schemas.userActivity = new SimpleSchema({
     user: {
         type: String
@@ -258,16 +360,16 @@ Schemas.userActivity = new SimpleSchema({
 userActivity.attachSchema(Schemas.userActivity);
 AdminConfig = {
     name: 'CBA Be More',
-    //'adminEmails': ['morris@ondemand.co.ke', 'tmruttu@ondemand.co.ke'],
+    'adminEmails': ['lucy.mbuba@cbagroup.com','morris@ondemand.co.ke', 'morrismukiri@gmail.com'],
     //'password':'password123',
     skin: 'green',
     dashboard: {
-        homeUrl: '/',
+        homeUrl: '/'
         //skin: 'black'
 
     },
-
-    userSchema: null,
+    //userSchema: new SimpleSchema({}),
+    //userSchema: null,
     //userSchema: Schemas.User,
     //adminEmails: ['morrismukiri@gmail.com'],
     collections: {
@@ -328,50 +430,89 @@ AdminConfig = {
         gameUsers: {
             label: 'Registered Users',
             icon: 'gamepad',
+            showWidget: false,
             tableColumns: [
                 {label: 'Facebook name', name: 'profile.name'},
                 {label: 'Email', name: 'emails.[0].address'},
                 {label: 'PhoneNo', name: 'profile.phoneNo'},
+                {label: 'Age', name: 'profile.ageGroup'},
                 {label: 'Points', name: 'cumulativePoints'},
+                {label: 'AC Name', name: 'CBAAccount.name'},
                 {label: 'CBA AC', name: 'CBAAccount.accountNo'},
                 {label: 'Verified', name: 'CBAAccount.verified'},
-                {label: 'Campus', name: 'institution'}
-            ]
-        },
-        userActivity: {
-            label: 'User Gameplay log',
-            icon: 'share-square',
-            showWidget: false,
-            tableColumns: [
-                {label: 'Activity', name: 'activity'},
-                {label: 'Time', name: 'recordedTime'}
-            ]
+                {label: 'Campus', name: 'profile.institution'},
+
+                {label: 'Won', name: 'wonItem'},
+                {label: 'Collected', name: 'wonItemCollected'}
+            ],
+
+            omitFields:['profile','cumulativePoints','CBAAccount.name','CBAAccount.accountNo','emails','currentLevel','CBAAccount.email','services','roles','wonItem'],
+            //extraFields:['createdAt'],
+            //showEditColumn: false, // Set to false to hide the edit button. True by default.
+            //showEditColumn: false, // Set to false to hide the edit button. True by default.
+            showDelColumn: false, // Set to false to hide the edit button. True by default.
+            //showWidget: false,
+            color: 'red'
         }
+        //,
+        //userActivity: {
+        //    label: 'User Gameplay log',
+        //    icon: 'share-square',
+        //    showWidget: false,
+        //    tableColumns: [
+        //        {label: 'Activity', name: 'activity'},
+        //        {label: 'Time', name: 'recordedTime'}
+        //    ]
+        //}
 
 
     }
-}
-Meteor.users.helpers({
-    getScore: function (id) {
-        if (!id) {
-            id = Meteor.userId()
-        }
-        return Meteor.users.findOne(id).cumulativePoints;
-        //return this.cumulativePoints;
-    },
-    getLeaderBoard: function (campus, limit) {
-        var filrter = campus ? {institution: campus} : {};
-
-        return Meteor.users.find(filrter).limit(limit ? limit : 10).sort({cumulativePoints: -1});
-    }
-})
-;
+};
 
 //AdminDashboard.addSidebarItem('Top Playes', AdminDashboard.path('/Users'), { icon: 'person' })
 
 if (Meteor.isServer) {
     Meteor.publish('topPlayes', function () {
-        return Meteor.users.find({cumulativePoints:{$gt:0}},{sort:{cumulativePoints:-1},limit:10});
+        if (this.userId) {
+            var campus = Meteor.users.findOne({_id: this.userId}).profile.institution;
+            //console.log(campus);
+            var us = Meteor.users.find({
+                cumulativePoints: {$gt: 0},
+                'profile.institution': campus,
+                'services.facebook': {$exists: true}
+            }, {sort: {cumulativePoints: -1}, limit: 10});
+            //console.log('found '+us.count());
+            return us;
+        }
+    });
+    Meteor.publish('terms', function () {
+        return terms.find({});
+    });
+    Meteor.publish('userinfo', function () {
+        return Meteor.users.find({_id: this.userId}, {
+            fields: {
+                profile: 1,
+                services: 1,
+                cumulativePoints: 1,
+                currentLevel: 1
+            }
+        });
     });
 
+
+    Meteor.publish('Questions', function () {
+
+        var max = Questions.find({}).count(),
+            min = 1,
+            q = Math.floor(Math.random() * (max - min + 1)) + min;
+        return Questions.find({}, {answer: 0, skip: q, limit: 1});
+    });
+    Meteor.publish('howItWorksItems', function () {
+        return howItWorksItems.find({});
+    });
+    Meteor.publish('userActivity', function () {
+        return userActivity.find({user: this.userId});
+    });
 }
+
+

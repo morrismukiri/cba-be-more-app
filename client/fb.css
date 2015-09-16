@@ -1,5 +1,5 @@
 #radio-button h2 {
-    font-size: 18.7199993133545px;
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 30px;
     margin-top: 50px;
@@ -24,5 +24,64 @@ body{
 }
 .center{
     float:none;
-    margin: inherit auto;
+}
+.btn-primary{
+    background-color: #98BD0D;
+}
+@font-face {
+    font-family: 'Brankovic';
+    src: url('brankovic.ttf');
+}
+body,*,.forced-font{
+    font-family: Brankovic ;
+
+}
+body{
+    background-image: url('back.jpg');
+    background-size: 100%;
+}
+.text-primary{
+    color:#98BD0D;
+}
+.navbar-special{
+    background-image: url('topBanner.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    background-color: #4D3123 !important;
+
+}
+@media (min-width: 768px) {
+    .navbar-special {
+        /*border-radius: 4px;*/
+        min-height: 8.5em;
+    }
+}
+@media (min-width: 1366px) {
+    .navbar-special {
+        /*border-radius: 4px;*/
+        min-height: 12em;
+    }
+}
+.btn-primary,.btn-success{
+    background-color: #98BD0D !important;
+    color: #000 !important;
+}
+.btn-info{
+    background-color: #00989B !important;
+}
+.question-container .jumbotron{
+    background: rgba(77,49,35,0.75);
+    color: #ffffff;
+    font-size: 2em;
+}
+.home-text{
+    padding-left: 2em;
+    font-size: 1.75em;
+}
+#tnc{
+    font-size: 3em;
+}
+.point-indicator{
+    font-size: 0.5em;
 }
