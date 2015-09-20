@@ -138,6 +138,7 @@ if (Meteor.isClient) {
             var QnA = {};
 
             for (i = 1; i <= 10; i++) {
+            for (i = 1; i <= 10; i++) {
                 QnA['q[' + i + ']'] = ev.target['q[' + i + ']'].value;
                 console.log( ev.target['q[' + i + ']'].value);
                 Meteor.call('checkQuestion', i - 1, ev.target['q[' + i + ']'].value);
@@ -148,7 +149,7 @@ if (Meteor.isClient) {
             Router.go('/');
 
         }
-    });
+    }});
     Session.setDefault('hasShared', false);
     Template.infoContainer.events({
         'click #fbShare': function (ev) {

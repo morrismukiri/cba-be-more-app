@@ -432,6 +432,7 @@ AdminConfig = {
             icon: 'gamepad',
             showWidget: false,
             tableColumns: [
+                {label:'Date',name:'createdAt'},
                 {label: 'Facebook name', name: 'profile.name'},
                 {label: 'Email', name: 'emails.[0].address'},
                 {label: 'PhoneNo', name: 'profile.phoneNo'},
@@ -451,19 +452,19 @@ AdminConfig = {
             //showEditColumn: false, // Set to false to hide the edit button. True by default.
             //showEditColumn: false, // Set to false to hide the edit button. True by default.
             showDelColumn: false, // Set to false to hide the edit button. True by default.
-            //showWidget: false,
+            showWidget: false,
             color: 'red'
         }
-        //,
-        //userActivity: {
-        //    label: 'User Gameplay log',
-        //    icon: 'share-square',
-        //    showWidget: false,
-        //    tableColumns: [
-        //        {label: 'Activity', name: 'activity'},
-        //        {label: 'Time', name: 'recordedTime'}
-        //    ]
-        //}
+        ,
+        userActivity: {
+            label: 'User Gameplay log',
+            icon: 'share-square',
+            showWidget: false,
+            tableColumns: [
+                {label: 'Activity', name: 'activity'},
+                {label: 'Time', name: 'recordedTime'}
+            ]
+        }
 
 
     }

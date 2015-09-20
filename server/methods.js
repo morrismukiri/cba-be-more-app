@@ -137,7 +137,7 @@ if (Meteor.isServer) {
                 console.log('set level to '+LEVEL_PROFILE);
                 changeLevel(LEVEL_PROFILE);
             }else if(activity==='trivia'){
-                console.log('Answered trivia question');
+                console.log(Meteor.user().services.facebook.name + ' Answered trivia question');
                 //addPoints(1);
                 //changeLevel(0);
             }

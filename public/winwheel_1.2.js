@@ -348,7 +348,7 @@ function doSpin() {
 
 
                     if(prizes[x]['name']==='CBA Cash Credit'){
-                        msg="Congratulations! You have won an account top-up of Ksh. 500";
+                        msg="Congratulations! You have won an account top-up of Ksh. 500 to be awarded in Dec 2015";
                     }else if(prizes[x]['name']==='Water Bottle'){
                         msg="Congratulations! Collect your water bottle at the CBA activation tent";
                     }else if(prizes[x]['name']==='Flash Disk'){
