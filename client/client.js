@@ -11,7 +11,11 @@ if (Meteor.isClient) {
     Meteor.subscribe('userinfo');
     Meteor.subscribe('userActivity');
     Meteor.subscribe('users');
-
+    Meteor.call('getTime', function (e,d) {
+        if(!e){
+            Session.set('today',d);
+        }
+    });
     Template.fbApp.helpers({
         isOperaMini: function () {
             return !!window['operamini'];
@@ -29,18 +33,23 @@ if (Meteor.isClient) {
             return curLevel === level;
         },
         toUpdateProfile: function () {
-            if (Meteor.user().currentLevel) {
-                return isAtLevel(LEVEL_PROFILE);
-            } else {
-                return true;
-            }
+            var curLevel=Meteor.user().currentLevel,
+                profileInActivity=userActivity.find({
+                    user: Meteor.userId(),
+                    activity: 'profileEdit',
+                }).count();
+            console.log('user at level '+ curLevel+' profile edits in activity '+ profileInActivity);
+            return profileInActivity===0;
         },
         toAnsewerTrivia: function () {
-            if (Meteor.user().currentLevel) {
-                return isAtLevel(LEVEL_QUIZ);
-            } else {
-                return true;
-            }
+            var curLevel=Meteor.user().currentLevel,
+                quizInActivity=userActivity.find({
+                        user: Meteor.userId(),
+                        activity: 'quiz',
+                    }).count();
+                console.log('user at level '+ curLevel+' quiz in activity '+ quizInActivity);
+                return quizInActivity===0;
+
         }
 
     });
@@ -138,25 +147,29 @@ if (Meteor.isClient) {
             var QnA = {};
 
             for (i = 1; i <= 10; i++) {
-            for (i = 1; i <= 10; i++) {
-                QnA['q[' + i + ']'] = ev.target['q[' + i + ']'].value;
+            //for (i = 1; i <= 10; i++) {
+                var ans=$("[name='q[" +i +"]']:checked").val();//ev.target['q[]'].value;
+
+                QnA['q[' + i + ']'] = ans;
                 console.log( ev.target['q[' + i + ']'].value);
-                Meteor.call('checkQuestion', i - 1, ev.target['q[' + i + ']'].value);
+                Meteor.call('checkQuestion', i - 1, ans);
             }
 
             //console.log(QnA)
             Meteor.call('addActivity', 'quiz', QnA);
+                Meteor.call('errorLog',ev.target);
             Router.go('/');
 
-        }
-    }});
+        //}
+    }
+    });
     Session.setDefault('hasShared', false);
     Template.infoContainer.events({
         'click #fbShare': function (ev) {
             //ev.target.preventDefault();
             FB.ui({
                 method: 'share',
-                href: 'https://apps.facebook.com/cbabemorechallenge/invite/' + Meteor.userId(),
+                href: 'http://j.mp/bemorechallenge',
             }, function (response) {
                 Session.set('hasShared', true);
                 //console.log('shared');
@@ -200,16 +213,19 @@ if (Meteor.isClient) {
             activity: 'share'
         });
     });
+    Session.setDefault('today',new Date());
     Template.registerHelper('answeredTrivia', function () {
-        var today = new Date(),
-            dd = today.getDate(),
+        var today =Session.get('today'),
+            dd = ("0" + (today.getDate())).slice(-2),
+            dd2=today.getDate(),
             mm = today.getMonth() + 1, //January is 0!
             yyyy = today.getFullYear();
         return userActivity.find({
             user: Meteor.userId(),
             activity: 'trivia',
-            recordedTime: {$gte: new Date(yyyy + '-' + mm + '-' + dd)}
-        }).fetch();
+            $or:[{ recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd)}},
+                { recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2)}}]
+        }).count()>0;
     });
     Template.registerHelper('accountVerified', function () {
         return Meteor.user().CBAAccount.verified
@@ -218,7 +234,7 @@ if (Meteor.isClient) {
         return userActivity.find({
             user: Meteor.userId(),
             activity: 'quiz'
-        }).fetch();
+        }).count()>0;
     });
     Template.registerHelper('hasSpinWheel', function () {
         return userActivity.find({
@@ -309,18 +325,26 @@ if (Meteor.isClient) {
     Template.trivia.events({
         'submit #triviaForm': function (ev) {
             ev.preventDefault();
-            Session.set('answeredTrivia', true);
+
             //if(ev.target.answer.value==Questions.findOne().answer){
             //console.log( ev.target['q[]'].value);
-            Meteor.call('checkTrivia', {q: Questions.findOne()._id, a: ev.target['q[]'].value});
+            var ans=$("[name='q[]']:checked").val();//ev.target['q[]'].value;
+            Meteor.call('checkTrivia', {q: Questions.findOne()._id._str, a: ans},function(error,result){
+                if(!error){
+                    Meteor.call('addActivity', 'trivia', {q: Questions.findOne()._id._str, a: ans});
+                    Session.set('answeredTrivia', true);
+                }
+            });
             //}
-            Meteor.call('addActivity', 'trivia', null);
-            var result = Questions.findOne().answer == ev.target['q[]'].value
-            if (Questions.findOne().answer == ev.target['q[]'].value) {
+            //var result = Questions.findOne().answer === ev.target['q[1]'].value;
+            if (Questions.findOne().answer === ans) {
                 alert('Congratulations! You got it right');
             } else {
-                alert('Sorry, wrong answer');
+                alert('Sorry, wrong answer.');
             }
+            //console.log(Meteor.user().services.facebook.name +' Answered '+ans +', Right answer is '+Questions.findOne().answer);
+            //Meteor.call('errorLog', Meteor.user().services.facebook.name +' Answered '+ans+', Right answer is '+Questions.findOne().answer+' for question '+ Questions.findOne()._id._str);
+
             Router.go('/');
         }
     });
@@ -332,5 +356,9 @@ if (Meteor.isClient) {
         }
     });
     Template.spinWheel.helpers({});
-
+    Template.quiz.helpers({
+        no: function () {
+            return 1;
+        }
+    })
 }

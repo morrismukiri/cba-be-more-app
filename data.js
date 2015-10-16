@@ -110,7 +110,7 @@ Schemas.CBAAccount = new SimpleSchema({
     accountNo: {
         type: String,
         optional: true,
-        label: 'First six digits of account number'
+        label: 'First six digits of your account number'
     },
     email: {
         type: String,
@@ -160,7 +160,7 @@ Schemas.UserProfileUpdate = new SimpleSchema({
     },
     phoneNo: {
         type: String,
-        regEx: /^(0|\+?254)7([0-3|7])(\d){7}$/
+        regEx: /^(0|\+?254)7([0-9])(\d){7}$/
         //optional: true
     },
     ageGroup: {
@@ -197,7 +197,7 @@ Schemas.UserProfile = new SimpleSchema({
     },
     phoneNo: {
         type: String,
-        regEx: /^(0|\+?254)7([0-3|7])(\d){7}$/,
+        regEx: /^(0|\+?254)7([0-9])(\d){7}$/,
         optional: true
     },
     ageGroup: {
@@ -226,7 +226,7 @@ SimpleSchema.messages({
     regEx: [
         {msg: 'Invalid value'},
         {exp: /^[a-zA-Z']{2,25}$/, msg: 'Please enter a valid Name'},
-        {exp: /^(0|\+?254)7([0-3|7])(\d){7}$/, msg: 'Please enter a valid Kenyan mobile phone number'}
+        {exp: /^(0|\+?254)7([0-9])(\d){7}$/, msg: 'Please enter a valid Kenyan mobile phone number'}
     ]
 });
 
@@ -256,7 +256,7 @@ Schemas.User = new SimpleSchema({
         defaultValue: function () {
             return new Date();
         },
-        optional:true
+        optional: true
     },
     profile: {
         type: Schemas.UserProfile,
@@ -323,7 +323,29 @@ Schemas.UserUpdate = new SimpleSchema({
         type: Schemas.UserProfileUpdate
     }
 });
-account=Meteor.users;
+Schemas.gameActivity = new SimpleSchema({
+    user: {
+        type: String,
+        optional: true
+    },
+    activity: {
+        type: String,
+        optional: String
+    },
+    details: {
+        type: String,
+        optional: true
+    },
+    recordedTime: {
+        type: Date,
+        defaultValue: function () {
+            return new Date();
+        },
+        optional: true
+    }
+});
+gameActivity.attachSchema(Schemas.gameActivity);
+account = Meteor.users;
 //Schemas.account = new SimpleSchema({
 //    name: {
 //        type: String,
@@ -360,7 +382,7 @@ Schemas.userActivity = new SimpleSchema({
 userActivity.attachSchema(Schemas.userActivity);
 AdminConfig = {
     name: 'CBA Be More',
-    'adminEmails': ['lucy.mbuba@cbagroup.com','morris@ondemand.co.ke', 'morrismukiri@gmail.com'],
+    'adminEmails': ['lucy.mbuba@cbagroup.com', 'morris@ondemand.co.ke', 'morrismukiri@gmail.com','geoffrey.nganga@meyousnetworking.com'],
     //'password':'password123',
     skin: 'green',
     dashboard: {
@@ -397,24 +419,24 @@ AdminConfig = {
                 {label: 'Icon', name: 'icon'}
             ]
         },
-        rewards: {
-            label: 'Rewards Items',
-            icon: 'gift',
-            omitFields: ['_id'],
-            tableColumns: [
-                {label: 'Item No', name: 'no'},
-                {label: 'Title', name: 'title'},
-                {label: 'Description', name: 'description'},
-                {label: 'Icon', name: 'icon'}
-            ]
-        },
-        participatingInstitutions: {
-            label: 'Participating Institutions',
-            icon: 'university',
-            tableColumns: [
-                {label: 'Name', name: 'name'}
-            ]
-        },
+        //rewards: {
+        //    label: 'Rewards Items',
+        //    icon: 'gift',
+        //    omitFields: ['_id'],
+        //    tableColumns: [
+        //        {label: 'Item No', name: 'no'},
+        //        {label: 'Title', name: 'title'},
+        //        {label: 'Description', name: 'description'},
+        //        {label: 'Icon', name: 'icon'}
+        //    ]
+        //},
+        //participatingInstitutions: {
+        //    label: 'Participating Institutions',
+        //    icon: 'university',
+        //    tableColumns: [
+        //        {label: 'Name', name: 'name'}
+        //    ]
+        //},
         terms: {
             label: 'Terms and Conditions',
             icon: 'list-alt',
@@ -430,9 +452,8 @@ AdminConfig = {
         gameUsers: {
             label: 'Registered Users',
             icon: 'gamepad',
-            showWidget: false,
             tableColumns: [
-                {label:'Date',name:'createdAt'},
+                {label: 'Date', name: 'createdAt'},
                 {label: 'Facebook name', name: 'profile.name'},
                 {label: 'Email', name: 'emails.[0].address'},
                 {label: 'PhoneNo', name: 'profile.phoneNo'},
@@ -447,23 +468,37 @@ AdminConfig = {
                 {label: 'Collected', name: 'wonItemCollected'}
             ],
 
-            omitFields:['profile','cumulativePoints','CBAAccount.name','CBAAccount.accountNo','emails','currentLevel','CBAAccount.email','services','roles','wonItem'],
+            omitFields: ['profile',  'CBAAccount.name', 'CBAAccount.accountNo', 'emails', 'currentLevel', 'CBAAccount.email', 'services', 'roles', 'wonItem'],
             //extraFields:['createdAt'],
             //showEditColumn: false, // Set to false to hide the edit button. True by default.
             //showEditColumn: false, // Set to false to hide the edit button. True by default.
             showDelColumn: false, // Set to false to hide the edit button. True by default.
-            showWidget: false,
-            color: 'red'
+            showWidget: true,
+            color: 'green'
         }
         ,
-        userActivity: {
-            label: 'User Gameplay log',
+        //userActivity: {
+        //    label: 'User Gameplay log',
+        //    icon: 'share-square',
+        //    showWidget: false,
+        //    tableColumns: [
+        //        {label: 'Activity', name: 'activity'},
+        //        {label: 'Time', name: 'recordedTime'}
+        //    ]
+        //}
+        gameActivity: {
+            label: 'Game Activity',
             icon: 'share-square',
-            showWidget: false,
             tableColumns: [
-                {label: 'Activity', name: 'activity'},
-                {label: 'Time', name: 'recordedTime'}
-            ]
+                {label: 'Time', name: 'recordedTime'},
+                {label: 'User', name: 'user'},
+                {label: 'Activity', name: 'activity'}
+
+            ],
+            showEditColumn: false, // Set to false to hide the edit button. True by default.
+            //showEditColumn: false, // Set to false to hide the edit button. True by default.
+            showDelColumn: false, // Set to false to hide the edit button. True by default.
+            showWidget: false
         }
 
 
@@ -481,7 +516,7 @@ if (Meteor.isServer) {
                 cumulativePoints: {$gt: 0},
                 'profile.institution': campus,
                 'services.facebook': {$exists: true}
-            }, {sort: {cumulativePoints: -1}, limit: 10});
+            }, {sort: {cumulativePoints: -1}, limit: 30});
             //console.log('found '+us.count());
             return us;
         }
@@ -490,14 +525,7 @@ if (Meteor.isServer) {
         return terms.find({});
     });
     Meteor.publish('userinfo', function () {
-        return Meteor.users.find({_id: this.userId}, {
-            fields: {
-                profile: 1,
-                services: 1,
-                cumulativePoints: 1,
-                currentLevel: 1
-            }
-        });
+        return Meteor.users.find({_id: this.userId});
     });
 
 

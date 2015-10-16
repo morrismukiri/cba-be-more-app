@@ -23,6 +23,6 @@ accounts-facebook
 service-configuration
 meteorhacks:fast-render
 ongoworks:security
-nourharidy:ssl
 reactive-var
 force-ssl
+nourharidy:ssl

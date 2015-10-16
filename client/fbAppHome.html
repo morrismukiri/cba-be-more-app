@@ -15,9 +15,9 @@
     <!--points-->
     <div class="panel panel-primary">
 
-        <button class="btn btn-invese btn-lg btn-link center" style="font-size:18px;">
+        <button class="btn btn-invese btn-lg btn-link center" style="font-size:14px;">
             {{#if img}} <img src="{{img}}" alt="Profile_pic"/>{{/if}}
-            score <span class="glyphicon glyphicon-user"></span>
+            score (corrected) <span class="glyphicon glyphicon-user"></span>
         </button>
 
         <span class="badge badge-notify">{{currentScore}}</span>
@@ -106,7 +106,7 @@
     {{#if answeredTrivia}}
         <h1>You have already answered today's trivia. Try again tomorrow</h1>
         <a href="/" class="btm btn-success">Go Back</a>
-        {{else}}
+        {{ else}}
 
     <form class="container" id="triviaForm">
         <ul class="list-unstyled list-group">
