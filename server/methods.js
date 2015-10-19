@@ -142,7 +142,7 @@ if (Meteor.isServer) {
                 changeLevel(5);
             } else if (activity === 'profileEdit') {
                 console.log(Meteor.user().services.facebook.name + 'profile edited');
-                addPoints(1);
+                if(firstTimer){addPoints(1);}
                 if (Meteor.user().currentLevel===LEVEL_PROFILE || Meteor.user().currentLevel===LEVEL_QUIZ) {
                     changeLevel(LEVEL_ACCOUNT)
                 } else {
@@ -240,20 +240,23 @@ if (Meteor.isServer) {
     }
     var answeredTrivia = function () {
         var today = new Date(),
-            dd = ("0" + (today.getDate())).slice(-2),
+            //dd = ("0" + (today.getDate())).slice(-2),
             dd2 = today.getDate(),
             mm = today.getMonth() + 1, //January is 0!
             yyyy = today.getFullYear();
         var count=userActivity.find({
             user: Meteor.userId(),
             activity: 'trivia',
-            $or:[{ recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd)}},
-                { recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2)}}]
+
+                recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z')}
         }).count();
-        console.log(Meteor.user().services.facebook.name+' has answered trivia '+count +' Times');
+        console.log(Meteor.user().services.facebook.name+' has answered trivia '+count +' Times on this '+dd2 +' day 0f '+mm+' year '+yyyy );
         return count > 0;
     };
     var answeredGeneralKnowledge= function () {
         return userActivity.find({user:Meteor.userId(), activity:'quiz'}).count()>0;
-    }
+    };
+    var firstTimer = function () {
+        return !(userActivity.find({user:Meteor.userId(), activity:'profileEdit'}).count()>0);
+    };
 }

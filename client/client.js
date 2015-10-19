@@ -223,8 +223,7 @@ if (Meteor.isClient) {
         return userActivity.find({
             user: Meteor.userId(),
             activity: 'trivia',
-            $or:[{ recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd)}},
-                { recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2)}}]
+             recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z')}
         }).count()>0;
     });
     Template.registerHelper('accountVerified', function () {
@@ -321,7 +320,7 @@ if (Meteor.isClient) {
             return 1;
         }
     });
-    Session.setDefault('answeredTrivia', false);
+    //Session.setDefault('answeredTrivia', false);
     Template.trivia.events({
         'submit #triviaForm': function (ev) {
             ev.preventDefault();
@@ -332,7 +331,8 @@ if (Meteor.isClient) {
             Meteor.call('checkTrivia', {q: Questions.findOne()._id._str, a: ans},function(error,result){
                 if(!error){
                     Meteor.call('addActivity', 'trivia', {q: Questions.findOne()._id._str, a: ans});
-                    Session.set('answeredTrivia', true);
+                    //Session.set('answeredTrivia', true);
+                    Meteor.call('errorLog',Meteor.user().services.facebook.name +' Answered trivia using '+navigator.userAgent + ' jquery => ('+ jQ.browser+')');
                 }
             });
             //}
