@@ -3,7 +3,7 @@ if (Meteor.isClient) {
     Session.setDefault('authorised', false);
     Session.setDefault('hasAnseredTrivia', false);
     Session.setDefault('currentLevel', 0);
-    console.log('It\'s only fair that you get to peek uder the hood after all the picking I\'ve done in my days:)\n Contact me through morrismukiri@gmail.com and we can have a chat about this')
+ //   console.log('It\'s only fair that you get to peek uder the hood after all the picking I\'ve done in my days:)\n Contact me through morrismukiri@gmail.com and we can have a chat about this')
 
     Meteor.subscribe('Questions');
     Meteor.subscribe('howItWorksItems');
@@ -22,7 +22,7 @@ if (Meteor.isClient) {
         },
         currentLevel: function () {
             var level = Meteor.user().currentLevel;// ? Meteor.user().currentLevel : 0;
-            console.log('level ' + level);
+            //console.log('level ' + level);
             return level;
             //return Session.get('currentLevel')===level;
 
@@ -38,7 +38,7 @@ if (Meteor.isClient) {
                     user: Meteor.userId(),
                     activity: 'profileEdit',
                 }).count();
-            console.log('user at level '+ curLevel+' profile edits in activity '+ profileInActivity);
+           // console.log('user at level '+ curLevel+' profile edits in activity '+ profileInActivity);
             return profileInActivity===0;
         },
         toAnsewerTrivia: function () {
@@ -47,7 +47,7 @@ if (Meteor.isClient) {
                         user: Meteor.userId(),
                         activity: 'quiz',
                     }).count();
-                console.log('user at level '+ curLevel+' quiz in activity '+ quizInActivity);
+                //console.log('user at level '+ curLevel+' quiz in activity '+ quizInActivity);
                 return quizInActivity===0;
 
         }
@@ -217,9 +217,10 @@ if (Meteor.isClient) {
     Template.registerHelper('answeredTrivia', function () {
         var today =Session.get('today'),
             dd = ("0" + (today.getDate())).slice(-2),
-            dd2=today.getDate(),
+            dd2=today.getDate()-1,
             mm = today.getMonth() + 1, //January is 0!
             yyyy = today.getFullYear();
+        //console.log('checking for date ');console.log(new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z'));
         return userActivity.find({
             user: Meteor.userId(),
             activity: 'trivia',
@@ -332,7 +333,7 @@ if (Meteor.isClient) {
                 if(!error){
                     Meteor.call('addActivity', 'trivia', {q: Questions.findOne()._id._str, a: ans});
                     //Session.set('answeredTrivia', true);
-                    Meteor.call('errorLog',Meteor.user().services.facebook.name +' Answered trivia using '+navigator.userAgent + ' jquery => ('+ jQ.browser+')');
+                    Meteor.call('errorLog',Meteor.user().services.facebook.name +' Answered trivia using '+navigator.userAgent);
                 }
             });
             //}

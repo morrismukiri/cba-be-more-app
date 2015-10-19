@@ -142,7 +142,7 @@ if (Meteor.isServer) {
                 changeLevel(5);
             } else if (activity === 'profileEdit') {
                 console.log(Meteor.user().services.facebook.name + 'profile edited');
-                if(firstTimer){addPoints(1);}
+                if(firstTimer()){addPoints(1);}
                 if (Meteor.user().currentLevel===LEVEL_PROFILE || Meteor.user().currentLevel===LEVEL_QUIZ) {
                     changeLevel(LEVEL_ACCOUNT)
                 } else {
@@ -241,7 +241,7 @@ if (Meteor.isServer) {
     var answeredTrivia = function () {
         var today = new Date(),
             //dd = ("0" + (today.getDate())).slice(-2),
-            dd2 = today.getDate(),
+            dd2 = today.getDate()-1,
             mm = today.getMonth() + 1, //January is 0!
             yyyy = today.getFullYear();
         var count=userActivity.find({

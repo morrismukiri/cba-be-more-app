@@ -226,7 +226,7 @@ SimpleSchema.messages({
     regEx: [
         {msg: 'Invalid value'},
         {exp: /^[a-zA-Z']{2,25}$/, msg: 'Please enter a valid Name'},
-        {exp: /^(0|\+?254)7([0-9])(\d){7}$/, msg: 'Please enter a valid Kenyan mobile phone number'}
+        {exp: /^(0|\+?254)7([0-3|7])(\d){7}$/, msg: 'Please enter a valid Kenyan mobile phone number'}
     ]
 });
 
