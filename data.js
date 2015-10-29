@@ -486,20 +486,20 @@ AdminConfig = {
         //        {label: 'Time', name: 'recordedTime'}
         //    ]
         //}
-        gameActivity: {
-            label: 'Game Activity',
-            icon: 'share-square',
-            tableColumns: [
-                {label: 'Time', name: 'recordedTime'},
-                {label: 'User', name: 'user'},
-                {label: 'Activity', name: 'activity'}
-
-            ],
-            showEditColumn: false, // Set to false to hide the edit button. True by default.
-            //showEditColumn: false, // Set to false to hide the edit button. True by default.
-            showDelColumn: false, // Set to false to hide the edit button. True by default.
-            showWidget: false
-        }
+       // gameActivity: {
+        //    label: 'Game Activity',
+        //    icon: 'share-square',
+        //    tableColumns: [
+        //        {label: 'Time', name: 'recordedTime'},
+        //        {label: 'User', name: 'user'},
+        //        {label: 'Activity', name: 'activity'}
+        //
+        //    ],
+        //    showEditColumn: false, // Set to false to hide the edit button. True by default.
+        //    //showEditColumn: false, // Set to false to hide the edit button. True by default.
+        //    showDelColumn: false, // Set to false to hide the edit button. True by default.
+        //    showWidget: false
+        //}
 
 
     }
