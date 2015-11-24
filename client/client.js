@@ -224,7 +224,8 @@ if (Meteor.isClient) {
         return userActivity.find({
             user: Meteor.userId(),
             activity: 'trivia',
-             recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z')}
+             //recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z')}
+             recordedTime: {$gte: moment().startOf('day').toDate()}
         }).count()>0;
     });
     Template.registerHelper('accountVerified', function () {

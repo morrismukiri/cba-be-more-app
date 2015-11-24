@@ -248,7 +248,8 @@ if (Meteor.isServer) {
             user: Meteor.userId(),
             activity: 'trivia',
 
-                recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z')}
+                //recordedTime: {$gte: new Date(yyyy+'-'+mm+'-'+dd2+'T00:00:00.000Z')}
+            recordedTime: {$gte: moment().startOf('day').toDate()}
         }).count();
         console.log(Meteor.user().services.facebook.name+' has answered trivia '+count +' Times on this '+dd2 +' day 0f '+mm+' year '+yyyy );
         return count > 0;

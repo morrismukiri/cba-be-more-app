@@ -40,8 +40,7 @@ if (Meteor.isServer) {
             {
                 no: 10,
                 A: 'B'
-            }
-        ];
+            }];
     Meteor.methods({
         updateusrScores: function () {
             var allUsers = Meteor.users.find({}).fetch();
@@ -50,23 +49,25 @@ if (Meteor.isServer) {
             for (j = 0; j < allUsers.length; j++) {
 
                 var user = allUsers[j]._id;
-                //reset
-                //Meteor.users.update(
-                //    {_id: user}, {
-                //        $set: {
-                //            'cumulativePoints': 0
-                //        }
-                //    });
+                if (allUsers[j].cumulativePoints >= 120) {
+                    //resetsers
+                    Meteor.users.update(
+                        {_id: user}, {
+                            $set: {
+                                'cumulativePoints': 0
+                            }
+                        });
 
-                //give points for signup
-                //addPoints2(1, user);
-                //calculate score for general knowledge
-                //addPoints2(getGeneralKnowledgeScore(user), user);
-                //calculate score for spin the wheel
-                //addPoints2(getWheelMarks(user), user);
-                // calculate score for daily trivia
-                addPoints2(getTriviaScore(user), user);
-                console.log(j + ' updated...');
+                    //give points for signup
+                    addPoints2(1, user);
+                    //calculate score for general knowledge
+                    addPoints2(getGeneralKnowledgeScore(user), user);
+                    //calculate score for spin the wheel
+                    addPoints2(getWheelMarks(user), user);
+                    //calculate score for daily trivia
+                    addPoints2(getTriviaScore(user), user);
+                    console.log(j + ' updated...');
+                }
             }
             console.log('done');
         }
@@ -122,11 +123,18 @@ if (Meteor.isServer) {
             mm = createdAt.getMonth() + 1, //January is 0!
             yyyy = createdAt.getFullYear();
         var earnedPoints = 0;
-        for (d = createdAt.getDate(); d <= 30; d++) {
+        var a = moment(createdAt.toString());
+        var b = moment();
+
+        for (var m = moment(a); m.isBefore(b); m.add('days', 1)) {
+            console.log('checking ' + m.format('YYYY-MM-DD'));
+            //}
+            //for (d = createdAt.getDate(); d <= 30; d++) {
             var count = userActivity.find({
                 user: user,
                 activity: 'trivia',
-                recordedTime: {$gte: new Date(yyyy + '-' + mm + '-' + d)}
+                //recordedTime: {$gte: new Date(yyyy + '-' + mm + '-' + d)}
+                recordedTime: {$gte: m.format('YYYY-MM-DD')}
             }).count();
             if (count > 0) {
                 earnedPoints += 1;

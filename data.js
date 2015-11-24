@@ -380,6 +380,25 @@ Schemas.userActivity = new SimpleSchema({
     }
 });
 userActivity.attachSchema(Schemas.userActivity);
+
+//Admin.collections.add('Questions',{collection:Questions});
+//Admin.collections.add('Users', {
+//    collection: gameUsers,
+//    Columns: [
+//    {title: 'Date', data: 'createdAt'},
+//    {title: 'Facebook data', data: 'profile.name'},
+//    {title: 'Email', data: 'emails.[0].address'},
+//    {title: 'PhoneNo', data: 'profile.phoneNo'},
+//    {title: 'Age', data: 'profile.ageGroup'},
+//    {title: 'Points', data: 'cumulativePoints'},
+//    {title: 'AC data', data: 'CBAAccount.name'},
+//    {title: 'CBA AC', data: 'CBAAccount.accountNo'},
+//    {title: 'Verified', data: 'CBAAccount.verified'},
+//    {title: 'Campus', data: 'profile.institution'},
+//    {title: 'Won', data: 'wonItem'},
+//    {title: 'Collected', data: 'wonItemCollected'}
+//    ]
+//});
 AdminConfig = {
     name: 'CBA Be More',
     'adminEmails': ['lucy.mbuba@cbagroup.com', 'morris@ondemand.co.ke', 'morrismukiri@gmail.com','geoffrey.nganga@meyousnetworking.com'],

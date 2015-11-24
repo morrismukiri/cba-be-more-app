@@ -18,11 +18,12 @@ aldeed:simple-schema@1.0.3
 aldeed:autoform
 biasport:facebook-sdk
 email
-yogiben:admin
 accounts-facebook
 service-configuration
-meteorhacks:fast-render
 ongoworks:security
 reactive-var
 force-ssl
 nourharidy:ssl
+aldeed:tabular
+momentjs:moment
+yogiben:admin
