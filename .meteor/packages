@@ -14,7 +14,7 @@ alanning:roles
 fortawesome:fontawesome
 fezvrasta:bootstrap-material-design
 ian:accounts-ui-bootstrap-3
-aldeed:simple-schema@1.0.3
+aldeed:simple-schema
 aldeed:autoform
 biasport:facebook-sdk
 email

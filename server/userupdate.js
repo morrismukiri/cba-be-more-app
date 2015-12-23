@@ -49,7 +49,7 @@ if (Meteor.isServer) {
             for (j = 0; j < allUsers.length; j++) {
 
                 var user = allUsers[j]._id;
-                if (allUsers[j].cumulativePoints >= 120) {
+                if ((allUsers[j].CBAAccount && allUsers[j].CBAAccount.verified  && allUsers[j].cumulativePoints <= 60) || allUsers[j].cumulativePoints<=20) {
                     //resetsers
                     Meteor.users.update(
                         {_id: user}, {

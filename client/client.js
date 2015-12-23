@@ -169,7 +169,7 @@ if (Meteor.isClient) {
             //ev.target.preventDefault();
             FB.ui({
                 method: 'share',
-                href: 'http://j.mp/bemorechallenge',
+                href: 'https://cbabemore.co.ke/',
             }, function (response) {
                 Session.set('hasShared', true);
                 //console.log('shared');

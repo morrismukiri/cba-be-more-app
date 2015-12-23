@@ -14,8 +14,8 @@ if (Meteor.isServer) {
         process.env.ROOT_URL = 'https://cbabemore.co.ke/';
         process.env.MONGO_URL = 'mongodb://localhost:81/meteor';
 
-        var key = 'c:\\realkey.pem', // '/home/meshack/CBABeMore/private/key.pem', //Assets.getBinary('key.pem'),
-            cert = 'c:\\finalcert.crt';//cbabemore_co_ke '/home/meshack/CBABeMore/private/cert.pem';//Assets.getBinary('cert.pem');
+        var key = 'c:\\newkey.key', // '/home/meshack/CBABeMore/private/key.pem', //Assets.getBinary('key.pem'),
+            cert = 'c:\\bemorechain.cer';//cbabemore_co_ke '/home/meshack/CBABeMore/private/cert.pem';//Assets.getBinary('cert.pem');
         SSL(key, cert, 443);
     });
 

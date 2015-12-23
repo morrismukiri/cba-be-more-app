@@ -13,6 +13,7 @@ Schemas = {},
     howItWorksItems = new Mongo.Collection('howItWorksItems');
 terms = new Mongo.Collection('terms');
 gameUsers = Meteor.users;
+
 var allowedUniversities =
         //participatingInstitutions.find({}).fetch();
         [
